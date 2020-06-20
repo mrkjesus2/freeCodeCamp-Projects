@@ -1,0 +1,139 @@
+:root {
+    --bg-color: white;
+    --link-color: #232f35;
+    --link-hover-color: #4C6472;
+    --navbar-bg-color: #B0D894;
+    --welcome-bg-color: #57A4B1;
+    --body-bg-color: #FADE89;
+    --footer-bg-color: #b15777;
+    --project-card-color: #bcdbe0;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--body-bg-color);
+}
+
+a {
+    padding: 10px;
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+a:active {
+    color: var(--link-hover-color);
+}
+
+a:focus {
+    color: var(--link-hover-color);
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 13vh;
+    min-height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--navbar-bg-color);
+}
+
+.site-title {
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.nav-links {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-link {
+    margin-right: 10px;
+    padding-left: 10px;
+    list-style-type: none;
+    font-size: 1.25em;
+}
+
+.welcome-section {
+    box-sizing: border-box;
+    padding: 30vh 25vw 0;
+    height: 100vh;
+    text-align: center;
+    background-color: var(--welcome-bg-color);
+}
+
+.welcome-section h1 {
+    font-size: 2em;
+}
+
+.welcome-section p {
+    font-size: 1.25em;
+}
+
+.projects {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: 50px auto;
+    max-width: 900px;
+    text-align: center;
+}
+
+.projects-header {
+    /* margin: 0; */
+    font-size: 2em;
+    text-align: center;
+}
+
+.project-tile {
+    margin: 0 10px 60px;
+    padding: 0 10px;
+    max-width: 250px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: var(--project-card-color);
+}
+
+.project-tile h2 {
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.project-img {
+    max-width: 100%;
+}
+
+footer {
+    height: 40px;
+    background-color: var(--footer-bg-color);
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    list-style-type: none;
+}
+
+@media only screen and (min-width: 500px) {
+    .navbar {
+        justify-content: space-around;
+        height: 10vh;
+    }
+}
+

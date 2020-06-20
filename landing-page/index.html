@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plates Pilates</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header id="header" class="header">
+        <nav id="nav-bar" class="nav-bar">
+            <a href="/tribute-page/" id="site-title" class="site-title">
+                <img id="header-img" class="site-logo" src="Logo_Original_Small.png" alt="Company Logo">
+            </a>
+            <ul id="nav-links" class="nav-links">
+                <li class="nav-link-cont"><a class="nav-link" href="#content">Features</a></li>
+                <li class="nav-link-cont"><a class="nav-link" href="#video">How it Works</a></li>
+                <li class="nav-link-cont"><a class="nav-link" href="#pricing">Pricing</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="banner" class="banner">
+            <h1>Virtual, Prop based Pilates</h1>
+            <p id="thanks" class='hidden'>Thank you for signing up!</p>
+            <form id="form" action="https://www.freecodecamp.com/email-submit">
+                <label for="email">Email</label>
+                <input type="email" 
+                    id="email" 
+                    name="email" 
+                    value="" 
+                    placeholder="Enter your email"
+                    required>
+                <input id="submit" type="submit">
+            </form>
+        </section>
+        <section id="content" class="content">
+            <div role="presentation">
+                <i class="gg-awards"></i>
+                <h2>Qualified</h2>
+            </div>
+            <p>
+                Jess has been teaching Pilates for over 5 years at a number of
+                reputable studios in the Philadelphia area. Her experience
+                includes leading teaching programs at a well known university.
+            </p>
+            <div role="presentation">
+                <i class="gg-bot"></i>
+                <h2>Fun</h2>
+            </div>
+            <p>
+                In so many virtual classes there is a few moments in class where
+                the instructor has to make sure that everybody has the Equipment
+                they need for the exercise. By requiring props for registrattion
+                we remove this lack of flow.
+            </p>
+            <div role="presentation">
+                <i class="gg-heart"></i>
+                <h2>Good for you</h2>
+            </div>
+            <p>
+                Pilates has a number of benefits including mental health, stronger
+                core, etc.
+            </p>
+        </section>
+        <iframe 
+        id="video"
+        class="video"
+        width="506" 
+        height="315" 
+        src="https://www.youtube.com/embed/ta2snBX8roU" 
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+    <div id="pricing" class="pricing">
+        <section class="pricing-card">
+            <h2>Private</h2>
+            <div class="pricing-card-info">
+                <h3>20$</h3>
+                <p>Great</p>
+                <p>Good</p>
+                <p>Help</p>
+                <p>Instruct</p>
+                <a href="#">Buy Private Class</a>
+            </div>
+        </section>
+        <section class="pricing-card">
+            <h2>Group</h2>
+            <div class="pricing-card-info">
+                <h3>$10</h3>
+                <p>Theraband</p>
+                <p>Foam Roller</p>
+                <p>Glider</p>
+                <p>Pilates Bar</p>
+                <a href="#">Puchase Group Class</a>
+            </div>
+        </section>
+        <section class="pricing-card">
+            <h2>Reform at Home</h2>
+            <div class="pricing-card-info">
+                <h3>$300/month</h3>
+                <p>Rent Equipment</p>
+                <p>Private included</p>
+                <p>Prerecorded videos</p>
+                <p>Studio at home</p>
+                <a href="#">Join Reform at Home</a>
+            </div>
+        </section>
+    </div>
+</main>
+<footer class="footer">
+    <ul>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+    <p>Copyright 2020, Plates</p>
+</footer>
+<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js" crossorigin="anonymous"></script>
+<script src="scripts.js"></script>
+</body>
+</html>

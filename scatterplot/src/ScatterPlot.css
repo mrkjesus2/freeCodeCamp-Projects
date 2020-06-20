@@ -1,0 +1,47 @@
+body {
+    background-color: rgb(78, 92, 107);
+}
+
+.scatterplot {
+    margin-top: 4em;
+    padding: 2em;
+    background-color: rgb(222, 240, 218);
+    border-radius: 10px;
+    box-shadow: 7px 5px 10px black;
+}
+
+.scatterplot--title {
+    margin-bottom: 1em;
+    font-size: 1.5em;
+    font-weight: 600;
+    text-align: center;
+}
+
+svg {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: rgb(240, 245, 239);
+}
+
+.scatterplot--dot {
+    fill: black;
+}
+
+svg .scatterplot--legend {
+    font-size: 0.7em;
+}
+
+.scatterplot--tooltip {
+    position: absolute;
+    padding: 0.5em;
+    width: 180px;
+    height: auto;
+    font-size: 0.65em;
+    text-align: center;
+    background-color: rgb(181, 181, 204);
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px black;
+    opacity: 0;
+}

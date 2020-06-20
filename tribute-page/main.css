@@ -1,0 +1,48 @@
+main {
+    max-width: 100%;
+    background-color: bisque;
+}
+
+header {
+    text-align: center;
+}
+
+figure {
+    background-color: #fff;
+}
+
+header h1 {
+    font-size: 3em;
+}
+
+img {
+    display: block;
+    padding-top: .5em;
+    margin: auto;
+    max-width: 95%;
+}
+
+
+h2 {
+    font-size: 1.25em;
+    text-align: center;
+}
+
+ul {
+    line-height: 2em;
+    padding: 5%, 10%;
+}
+
+.year {
+    font-weight: 800;
+}
+
+blockquote {
+    font-style: italic;
+}
+
+footer {
+    font-weight: 800;
+    font-size: 1.5em;
+    text-align: center;
+}

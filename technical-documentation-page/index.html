@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main id="main-doc" class="main-doc">
+        <nav id="navbar" class="navbar">
+            <header>
+                <h1 class="site-title">My VS Code Setup</h1>
+            </header>
+            <ol id="nav-links" class="nav-links">
+                <li class="nav-link-cont"><a href="#introduction" class="nav-link">introduction</a></li>
+                <li class="nav-link-cont"><a href="#installation" class="nav-link">installation</a></li>
+                <li class="nav-link-cont"><a href="#built_in_features" class="nav-link">built in features</a></li>
+                <li class="nav-link-cont"><a href="#shortcuts" class="nav-link">shortcuts</a></li>
+                <li class="nav-link-cont"><a href="#extensions" class="nav-link">extensions</a></li>
+                <li class="nav-link-cont"><a href="#tasks" class="nav-link">tasks</a></li>
+            </ol>
+        </nav>
+        <article class="main-content">
+        <section id="introduction" class="main-section">
+            <header>
+                <h2>introduction</h2>
+            </header>
+            <p>
+                Microsoft Visual Studio code is an extremely powerful text 
+                editor along the lines of the classic Sublime Text. It has 
+                amazing built in support for web developers.
+            </p>
+            <p>
+                In addtion to the built-in tools there are a vast number of 
+                extensions that can be added to extend it's functionality 
+            </p>
+            <p>
+                The following is information that I will want to remember
+                in case I end up having to start over from scratch. If it helps
+                anybody else, that's wonderful.
+            </p>
+        </section>
+        <section id="installation" class="main-section">
+            <header>
+                <h2>installation</h2>
+            </header>
+            <p>
+                There are two different ways to install VS Code. The traditional
+                local installation to your computer or a portable installation
+                which allows you to use it on any computer.
+            </p>
+            <P class="note">* Note: these are instructions for Windows</P>
+            <h3>Local Install</h3>
+            <!-- TODO: Wrap li text in p's -->
+            <ol>
+                <li>
+                    Download the
+                    <a href="https://go.microsoft.com/fwlink/?LinkID=534107">installer.</a>
+                </li>
+                <li>
+                    Run the file that you just downloaded
+                </li>
+                <li>
+                    Follow the instructions on your screen.
+                </li>
+                <li>
+                    Congratulations, you just installed a great editor.
+                </li>
+            </ol>
+            <h3>Portable Install</h3>
+            <ol>
+                <li>
+                    Download the zipped install files from 
+                    <a href="https://code.visualstudio.com/download">here</a>
+                </li>
+                <li>
+                    Unzip to a folder on your portable media. 
+                </li>
+                <li>
+                    In the folder where you unzipped the download create a 
+                    folder named 'data'.  This folder will contain all preferences,
+                    extensions, etc. This folder can be moved to other local
+                    or portable installations to easily move settings.
+                </li>
+                <li>
+                    Windows portable installations don't
+                    update automatically
+                    In order to update, repeat the above
+                    steps with the new version of VS Code and copy/move 
+                    the 'data'
+                </li>
+                <li>
+                    <em>Optional</em> -  get your settings from your local 
+                    install to your portable install
+                    <ol>
+                        <li>
+                            Copy the folder 
+                            <code>%APPDATA%\Roaming\Code</code>
+                            to the folder that was created in the steps 
+                            above and rename from "Code" to "user-data"
+                        </li>
+                        <li>
+                            Copy the folder
+                            <code>%USER%\.vscode\extensions</code>
+                            to the same 'data' folder making sure to retain the 
+                            folder name of 'extensions'.
+                        </li>
+                        <li>
+                            * note - Temporary files will still be stored on 
+                            the computer hosting the portable installation. If 
+                            this is undesirable create a 'tmp' directory inside
+                            the 'data' folder. 
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+
+        </section>
+        <section id="built_in_features" class="main-section">
+            <header>
+                <h2>built in features</h2>
+            </header>
+            <p>
+                VS Code has a number of built in time saving features
+                for the web developer. Some of the key features are Intellisense,
+                code refactoring, emmet, snippets, etc.
+            </p>
+            <h3>Intellisense</h3>
+            <p>
+                Intellisense is intelligent code completion and is built into 
+                VS Code for Javascript. Other languages can be enabled with 
+                extensions. The beautiful thing about Intellisense is that it
+                will also suggest and auto-complete functions defined in your
+                project.
+            </p>
+            <p>
+                For javascript the only thing you need to know is that VS Code 
+                will pop up suggestions as you type and to accept the suggestion
+                you only need to press the "tab"  key.
+            </p>
+            <h3>Emmet</h3>
+            <p>
+                For those that like to limit their typing, it's worth taking
+                some time to learn Emmets syntax. Here's an example of it's 
+                power. 
+            </p>
+            <p>Input</p>
+            <code>
+                header.navbar>h1.site-title+ul.nav-links>li.nav-link*3+main.content>(section.content$>h2>p)*3
+            </code>
+            <p>Output</p>
+            <pre>
+                <code>
+&lt;header class="navbar"&gt;
+    &lt;h1 class="site-title"&gt;&lt;/h1&gt;
+    &lt;ul class="nav-links"&gt;
+        &lt;li class="nav-link"&gt;&lt;/li&gt;
+        &lt;li class="nav-link"&gt;&lt;/li&gt;
+        &lt;li class="nav-link"&gt;&lt;/li&gt;
+        &lt;main class="content"&gt;
+            &lt;section class="content1"&gt;
+                &lt;h2&gt;
+                    &lt;p&gt;&lt;/p&gt;
+                &lt;/h2&gt;
+            &lt;/section&gt;
+            &lt;section class="content2"&gt;
+                &lt;h2&gt;
+                    &lt;p&gt;&lt;/p&gt;
+                &lt;/h2&gt;
+            &lt;/section&gt;
+            &lt;section class="content3"&gt;
+                &lt;h2&gt;
+                    &lt;p&gt;&lt;/p&gt;
+                &lt;/h2&gt;
+            &lt;/section&gt;
+        &lt;/main&gt;
+    &lt;/ul&gt;
+&lt;/header&gt;   
+                </code>
+            </pre>
+            <h3>Snippets</h3>
+            <p>
+                Snippets pop up in the Intellisense box that appears as 
+                you type. They are indicated by a box icon and give a preview
+                of the code they will insert. To insert simply hit 'tab' while 
+                the snippet is highlighted.
+            </p>
+            <p>Some common Javascript snippets:</p>
+            <ul>
+                <li>
+                    <code>for</code> results in
+                    <pre>
+                        <code>
+for (let index = 0; index &lt; array.length; index++) {
+    const element = array[index];
+    
+}                            
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>forof</code> results in
+                    <pre>
+                        <code>
+for (const iterator of object) {
+
+}                            
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>foreach</code> results in
+                    <pre>
+                        <code>
+array.forEach(element => {
+
+});                           
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>forin</code> results in
+                    <pre>
+                        <code>
+for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+        const element = object[key];
+        
+    }
+}
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>switch</code> results in
+                    <pre>
+                        <code>
+switch (key) {
+    case value:
+        
+        break;
+
+    default:
+        break;
+}
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>while</code> results in
+                    <pre>
+                        <code>
+while (condition) {
+
+}
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>function</code> results in
+                    <pre>
+                        <code>
+function name(params) {
+
+}                            
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>trycatch</code> results in
+                    <pre>
+                        <code>
+    try {
+
+    } catch (error) {
+        
+    }
+                        </code>
+                    </pre>
+                </li>
+                <li>
+                    <code>ifelse</code> results in
+                    <pre>
+                        <code>
+if (condition) {
+
+} else {
+    
+}
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </section>
+        <section id="shortcuts" class="main-section">
+            <header>
+                <h2>shortcuts</h2>
+            </header>
+            <p>
+                There are a number of extremely useful shortcuts that help
+                to speed things up for the developer. If you use the shortcuts
+                <code>ctrl + k ctrl + r</code> your browser will open a window
+                with a cheat sheet.
+            </p>
+            <p>
+                Here is a list of the shortcuts I find most useful:
+            </p>
+            <ul>
+                <li>
+                    <code>ctrl + d</code> - when you select text, this will add 
+                    the next occurrence to your selection 
+                </li>
+                <li>
+                    <code>alt + up/down</code> - Move the current line up or down
+                </li>
+                <li>
+                    <code>ctrl + `</code> - Open a terminal in the current folder
+                </li>
+                <li>
+                    <code>ctrl + Enter</code> - Start a new line below
+                </li>
+                <li>
+                    <code>ctrl + Shift + Enter</code> - Start a new line above
+                </li>
+                <li>
+                    <code>ctrl + /</code> - Toggles comment cursor's line
+                </li>
+                <li>
+                    <code>ctrl + Shift + p</code> - Open the command palette
+                </li>
+            </ul>
+        </section>
+        <section id="extensions" class="main-section">
+            <header>
+                <h2>extensions</h2>
+            </header>
+            <p>
+                Extensions are a great feature that allows the developer
+                to save themselves time if they find the right tool.
+            </p>
+            <p>To install an extension:</p>
+            <ol>
+                <li>
+                    Click the extensions icon in the activity bar
+                </li>
+                <li>
+                    search for an extension that you would like and 
+                    click on it
+                </li>
+                <li>
+                    Read the documentation for any specific instructions
+                    that may be required
+                </li>
+                <li>
+                    Click the install button
+                </li>
+            </ol>
+            <h3>Webhint</h3>
+            <p>
+                Checks code as you write and issues errors and warnings when it
+                finds problems in your code. There are an incredible number of
+                rules that can be enabled/disabled by the user.
+            </p>
+            <p>
+                It is my recommendation that you enable the nu html checker
+                for W3C validation. This is done by adding `html-checker` to the 
+                hints key in your ".hintrc" file. For further information on 
+                rules that can be added check the
+                <a href="https://webhint.io/docs/user-guide/">webhint</a>
+                website.
+            </p>
+            <h3>Live Server</h3>
+            <p>
+                Runs a server on port 5500 that will live reload the page when 
+                you save your file. Simply press the "Go Live" option in the 
+                status bar of VS Code.
+            </p>
+            <h3>Browser Preview</h3>
+            <p>
+                Used in conjuction with live server allows you to see live 
+                changes in VS Code itself. Just press the "Browser Preview"
+                button in the Activity bar an put 
+                <code>localhost:5500/your-direcory-here</code>
+                in the browser that appears.
+            </p>
+        </section>
+        <section id="tasks" class="main-section">
+            <header>
+                <h2>tasks</h2>
+            </header>
+            <p>
+                I haven't yet had a need to use tasks, but will update when I 
+                inevitably do. Check back later.
+            </p>
+        </section>
+    </article>
+    </main>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

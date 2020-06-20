@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <header>
+            <h1 id="title">Do you like Mark?</h1>
+            <p id="description">Thank you for taking the time to help me find out</p>
+        </header>
+        <form action="#" id="survey-form">
+            <h2>Tell me about yourself</h2>
+            <div class="form-field">
+                <label id="name-label" for="name">Name</label>
+                <input type="text"
+                    id="name"
+                    class="form-input"
+                    name="name"
+                    value=""
+                    placeholder="Enter your name"
+                    required>
+            </div>
+            <div class="form-field">
+                <label id="email-label" for="email" >Email</label>
+                <input type="email"
+                    id="email"
+                    class="form-input" 
+                    name="email"
+                    value=""
+                    placeholder="Enter your email"
+                    required>
+            </div>
+            <div class="form-field">
+                <label id="number-label">
+                    Age <span class="sub-text">(optional)</span>
+                </label>
+                <input name="age"
+                    id="number" 
+                    class="form-input"
+                    type="number"
+                    min="18"
+                    max="120" 
+                    placeholder="Your Age">
+            </div>
+            <!-- Role Select -->
+            <label class="form-field">
+                Which option best describes how you know me?
+                <select name="role" class="form-input">
+                    <option value="">-- Please select an option --</option>
+                    <option value="coworker">Coworker</option>
+                    <option value="girlfriend">Girlfriend</option>
+                    <option value="ihoped">I hoped you were my girlfriend</option>
+                    <option value="shehoped">You hoped I was your boyfriend</option>
+                    <option value="possiblechild">You might be my child</option>
+                    <option value="childwished">You wish you were my child</option>
+                    <option value="iscrewedup">I wish I never knew you</option>
+                    <option value="casual">I've seen you around</option>
+                    <option value="apathetic">Who cares?</option>
+                    <option value="theydontknowme">Other</option>
+                </select>
+            </label>
+            <!-- Radio Group -->
+            <h2>Would you recommend that your friend meet me?</h2>
+            <fieldset>
+                <div class="checkbox">
+                    <input type="radio" 
+                        id="definitely-not"
+                        name="radio-group" 
+                        value="definitely-not"
+                        checked>
+                    <label for="definitely-not">Definitely Not</label>
+                </div>
+                <div class="checkbox">
+                    <input type="radio" 
+                        id="maybe"
+                        name="radio-group" 
+                        value="maybe">
+                    <label for="maybe">If you apologize</label>
+                </div>
+                <div class="checkbox">
+                    <input type="radio" 
+                        id="notsure"
+                        name="radio-group" 
+                        value="notsure">
+                    <label for='notsure'>Let me sleep on it</label>
+                </div>
+            </fieldset>
+            <div class="checkbox">
+                <input type="radio" 
+                    id="probably-not"
+                    name="radio-group" 
+                    value="probably-not">
+                <label for='probably-not'>You'd better do something amazing</label>
+            </div>
+            <div class="checkbox">
+                <input type="radio" 
+                    id="noway"
+                    name="radio-group" 
+                    value="noway">
+                <label for='noway'>Nope, you messed up</label>
+            </div>
+                <!-- Feature Select -->
+                <h2>What is your favorite thing about me?</h2>
+            <label class="form-field">
+                <select id="dropdown" name="favorite-feature" class="form-input">
+                    <option value="">Select an option</option>
+                    <option value="humility">humility</option>
+                    <option value="sarcasm">sarcasm</option>
+                    <option value="self-deprication">self-deprication</option>
+                    <option value="nothing">Nothing</option>
+                    <option value="dislike">I actively dislike everything about you!</option>
+                </select>
+            </label>
+            <!-- Checkbox Group -->
+            <h2>How can I make you like me? 
+                <span class="sub-text">(check all that apply)</span>
+            </h2>
+            <fieldset>
+                <div class="checkbox">
+                    <input type="checkbox" id="think" name="improvements" value="think">
+                    <label for="think">Think of me</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="call" name="improvements" value="call">
+                    <label for="call">Call me</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="hang-out" name="improvements" value="hang-out">
+                    <label for="hang-out">Hang out with me</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="gift" name="improvements" value="gift">
+                    <label for="gift">Give me something</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="charity" name="improvements" value="charity">
+                    <label for="charity">Give somebody something</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="away" name="improvements" value="away">
+                    <label for="away">Go far, far, far away</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="get-here" name="improvements" value="get-here" checked>
+                    <label for="get-here">Get over here</label>
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" id="get-there" name="improvements" value="get-there">
+                    <label for="get-there">Get over there</label>
+                </div>
+            </fieldset>
+            <!-- Text Area -->
+            <h2>Any comments or sugggestions?</h2>
+            <label class="form-field">
+                <textarea class="form-input" 
+                    name="comments" 
+                    placeholder="Enter your comment here...(I hope their good)"></textarea>
+            </label>
+            <div class="form-field">
+                <button id="submit" class="form-input" type="submit">Submit</button>
+            </div>
+        </form>
+    </main>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</body>
+</html>
