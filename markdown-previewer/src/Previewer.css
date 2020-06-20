@@ -1,0 +1,21 @@
+.preview {
+    margin: 2rem auto 1rem;
+    width: 90%;
+    min-width: 240px;
+}
+
+.preview h1 {
+    font-size: 2em;
+}
+
+.preview-text {
+    padding: 0.5em;
+    background-color: var(--preview-background);
+    border: 2px solid var(--preview-border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: var(--box-shadow-x-offset) 
+        var(--box-shadow-y-offset)
+        var(--box-shadow-blur-radius)
+        var(--box-shadow-color);
+}

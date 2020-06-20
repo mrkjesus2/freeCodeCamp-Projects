@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
+
+:root {
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Comfortaa', cursive;
+  font-size: 1.1em;
+  background-color: rgb(81, 244, 250);
+}
+
+.clock {
+  margin: 3em auto;
+  width: 70vw;
+  min-width: 360px;
+  max-width: 475px;
+}
+
+.clock-title {
+  text-align: center;
+}
+
+.clock-settings {
+  display: flex;
+  justify-content: space-around;
+}
+
+.clock-setting {
+  padding: 0.5em 1em;
+  background-color: rgb(187, 180, 245);
+  border-radius: 25px;
+  box-shadow: 1px 1px 3px rgb(117, 113, 153);
+
+}
+
+.clock-setting-label {
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  text-transform: capitalize;
+}
+
+.clock-setting-content {
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-around;
+}
+
+.clock-timer {
+  margin: 2em auto 2em;
+  padding: 1em;
+  width: 70%;
+  text-align: center;
+  box-shadow: inset 1px 1px 10px black;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.clock-timer-label {
+  margin: 0.5em;
+  font-size: 2em;
+}
+
+.clock-timer-time-left {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-size: 3.5em;
+}
+
+.clock-controls {
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+  padding: 1em;
+  width: 70%;
+}
+
+.clock-controls-icon {
+  padding: 1em;
+  min-width: 75px;
+  text-align: center;
+  background-color: rgb(187, 180, 245);
+  box-shadow: 1px 1px 3px rgb(117, 113, 153);
+  border-radius: 25px;
+}
+
+.clock-controls:hover {
+  /* Change box shadow */
+}

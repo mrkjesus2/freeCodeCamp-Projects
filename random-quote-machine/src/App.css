@@ -1,0 +1,60 @@
+body {
+  background-color: rgb(102, 23, 192);
+}
+
+.quote-box {
+  margin: calc(100vh/5) auto 0;
+  padding: 20px;
+  width: 60%;
+  max-height: 100vh;
+  background-color: rgb(207, 197, 52);
+  border-radius: 15px;
+  box-shadow: 1px 1px 5px black;
+}
+
+.quote-text {
+  font-size: 1.15em;
+}
+
+.quote-author {
+  display: block;
+  padding-right: 4.5em;  
+  text-align: right;
+}
+
+.quote-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 40px;
+}
+
+.social-link {
+  padding-right: 40px;
+  font-size: 2em;
+}
+
+.new-quote {
+  flex-basis: 2;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px black;
+  background-color: rgb(89, 179, 253);
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
+
+.new-quote:active {
+  color: rgb(39, 38, 38);
+  box-shadow: 1px 1px 1px black;
+}
+
+.new-quote:hover {
+  color: rgb(39, 38, 38);
+}
+
+.new-quote:focus {
+  color: rgb(39, 38, 38);
+}

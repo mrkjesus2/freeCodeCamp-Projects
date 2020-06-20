@@ -1,0 +1,39 @@
+:root {
+  --body-color: #7ABAF2;
+  --toolbar-background: #afd6f7;
+  --toolbar-border: #B0D894;
+  --toolbar-box-shadow: green;
+  --editor-background: #dcedfc;
+  --editor-border: #B0D894;
+  --editor-box-shadow: green;
+  --preview-background: #dcedfc;
+  --preview-border: #B0D894;
+  --preview-box-shadow: green;
+  --box-shadow-x-offset: 1px;
+  --box-shadow-y-offset: 1px;
+  --box-shadow-blur-radius: 6px;
+  --box-shadow-color: #213513;
+}
+
+body {
+  margin: 0;
+  background-color: var(--body-color);
+}
+
+.container {
+  margin: 0 auto;
+  width: 95vw;
+}
+
+.fullscreen {
+  width: 100%;
+  height: 80vh;
+}
+
+.fullscreen textarea {
+  height: 100%;
+}
+
+.hidden {
+  display: none;
+}

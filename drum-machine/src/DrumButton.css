@@ -1,0 +1,6 @@
+.drum-machine-drumpads-pad {
+    background-color: var(--drumpad-color);
+    border-radius: 10px;
+    color: white;
+    font-size: 2rem;
+}

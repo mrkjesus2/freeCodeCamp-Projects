@@ -1,0 +1,34 @@
+:root {
+  --switch-color: rgb(255, 130, 130);
+  --switch-detent-color: rgb(61, 61, 253);
+  --display-border-color: black;
+  --display-background-color: rgb(211, 211, 211);
+  --drumpad-color: rgb(245, 83, 83);
+  --machine-background: rgb(1, 50, 122);
+}
+
+body {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  color: white
+}
+
+.drum-machine {
+  width: 80vw;
+  margin: auto;
+  margin-top: 20vw;
+  padding: 10px 0;
+  background-color: var(--machine-background);
+  border-radius: 25px;
+}
+
+.drum-machine h1 {
+  text-align: center;
+}
+
+.drum-machine-container {
+  display: -ms-grid;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  margin: 1em;
+}

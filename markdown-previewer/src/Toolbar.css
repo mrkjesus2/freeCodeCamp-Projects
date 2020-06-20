@@ -1,0 +1,17 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: var(--toolbar-background);
+    border: 2px solid var(--toolbar-border);
+    border-radius: 10px 10px 0 0;
+    box-shadow: var(--box-shadow-x-offset) 
+        var(--box-shadow-y-offset)
+        var(--box-shadow-blur-radius)
+        var(--box-shadow-color);
+}
+
+.toolbar h2 {
+    font-size: 1em;
+}

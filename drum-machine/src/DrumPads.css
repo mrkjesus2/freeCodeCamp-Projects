@@ -1,0 +1,6 @@
+.drum-machine-drumpads {
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    justify-content: space-around;
+    row-gap: 5px;
+}

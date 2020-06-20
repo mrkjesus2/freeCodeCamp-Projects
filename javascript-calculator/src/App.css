@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+
+:root {
+  --brand-bg: rgb(163, 142, 142);
+  --display-bg: rgb(197, 197, 197);
+}
+
+body {
+  font-family: 'Major Mono Display', monospace;
+  background-color: rgb(104, 68, 233);
+}
+
+.calculator-frame {
+  margin: 20vh 25vw;
+  padding: 1em;
+  min-width: 225px;
+  max-width: 400px;
+  border-radius: 20px;
+  background-color: var(--brand-bg);
+  box-shadow: 2px 2px 3px rgb(58, 57, 57),
+              -2px -2px 3px rgb(58, 57, 57),
+              2px -2px 3px rgb(58, 57, 57),
+              -2px 2px 3px rgb(58, 57, 57);
+}
+
+.brand {
+  margin: 0;
+  padding: 0.5em 0 1em;
+  width: 100%;
+  font-size: 1em;
+  text-align: center;
+}
+
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 0 auto;
+  padding: 10px;
+  height: 50px;
+  text-align: center;
+  font-size: 1.5em;
+  background-color: var(--display-bg);
+  box-shadow: inset -1px -1px 3px rgb(29, 28, 28),
+              inset 1px 1px 3px rgb(29, 28, 28),
+              inset -6px -6px 8px grey,
+              inset 6px 6px 8px grey;
+                    
+}
+
+@media only screen and (min-width: 800px) {
+  .calculator-frame {
+    margin: 20vh auto;
+  }
+}
+
+

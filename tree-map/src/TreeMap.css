@@ -1,0 +1,18 @@
+.treemap {
+    margin: 0 auto;
+    width: 800px;
+}
+
+.treemap--header {
+    text-align: center;
+}
+
+.treemap--title {
+    margin-bottom: 0;
+    /* font-size: 2em; */
+}
+
+.treemap--description {
+    margin-top: 0;
+    font-size: 1.5em;
+}

@@ -1,0 +1,61 @@
+figure {
+    margin: 0;
+}
+svg {
+    display: block;
+    margin: 0 auto;
+    width: 90vw;
+}
+
+.choropleth--header {
+    text-align: center;
+}
+
+.choropleth--title {
+    font-size: 1.5em;
+    margin-bottom: 0;
+}
+
+.choropleth--description {
+    font-size: 0.85em;
+    margin-top: 0;
+}
+
+.choropleth--tooltip {
+    position: absolute;
+    padding: 1em;
+    font-size: 0.6em;
+    line-height: 1em;
+    text-align: center;
+    background-color: rgb(201, 201, 201);
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px black;
+}
+
+.choropleth--tooltip h2,
+.choropleth--tooltip h3 {
+    margin: 0;
+}
+
+.choropleth--tooltip h3 {
+    font-size: 1.5em;
+}
+
+.choropleth--footer {
+    width: 90vw;
+}
+
+.choropleth--footer-link {
+    display: block;
+    margin-right: 20px;
+    width: 100%;
+    text-align: right;
+}
+
+.choropleth--footer-link a {
+    text-decoration: none;
+}
+
+.choropleth--footer-link:visited {
+    color: grey;
+}
