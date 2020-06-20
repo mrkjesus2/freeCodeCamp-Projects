@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect} from 'react';
+import HeatMap from './HeatMap'
 import './App.css';
 
 function App() {
+  const DATAURL = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json'
+  const [DATA, SETDATA] = useState(null)
+  const WIDTH = '90%'
+  const HEIGHT = '50%'
+  const PADDING  = 160
+
+  useEffect(() => {
+    fetch(DATAURL)
+      .then(res => res.json())
+      .then(data => SETDATA(data))
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <HeatMap data={DATA}
+             title="Monthly Global Temperature Variance"
+             description="from 1753 - 2015: temperature base 8.66"
+             width={WIDTH}
+             height={HEIGHT}
+             padding={PADDING}
+    />
+  )
 }
 
 export default App;
