@@ -1,9 +1,12 @@
 'use strict';
 
-const express = require('express');
-const mongo = require('mongodb');
-const mongoose = require('mongoose');
+const express = require('express')
+const mongo = require('mongodb')
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const dns = require('dns')
+const url = require('url')
+const util = require('util')
 
 const cors = require('cors');
 
@@ -17,14 +20,49 @@ var port = process.env.PORT || 3000;
 
 app.use(cors());
 
+let getShortURL = () => {
+  // Get UTF-16 decimal representation
+  let getNum = () => Math.floor(Math.random() * 93 + 33)
+  let urlLength = 6
+  let url = ''
+  
+  for (let i = 0; i < urlLength; i++) {
+    url += String.fromCharCode(getNum())
+  }
+  
+  return url
+}
+
+
+let isValidURL = async (bodyURL) => {
+  let dnsLookup = util.promisify(dns.lookup)
+  let parsed = url.parse(bodyURL).hostname
+  let result = dnsLookup(parsed)
+
+  let valid = result
+    .then(result => true)
+    .catch(err => {
+      // TODO# Add error to database?
+      return false
+    })
+
+  return valid
+}
+
 app.post('/api/shorturl', 
           bodyParser.urlencoded({extended: true}), 
-          (req, res) => {
-  console.log(req.body.url)
-  // Shorten url
-  // Add to Database
-  // return shortened URL
-  res.json({message: "Shortened URL"})
+          async (req, res) => {
+
+  let isValid = await isValidURL(req.body.url)
+  
+  if (isValid) {
+    let short = getShortURL()
+    // Add to Database
+    //  Make sure the shortened url doesn't exist already
+    res.json({orginal_url: req.body.url, short_url: short})
+  } else {
+    res.json({error: "Invalid URL"})
+  }
 })
 
 app.get('/api/shorturl/:urlid?', (req, res) => {
