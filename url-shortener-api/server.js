@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const dns = require('dns')
 const url = require('url')
 const util = require('util')
+const dotenv = require('dotenv').config()
 
 const cors = require('cors');
 
@@ -17,6 +18,7 @@ var port = process.env.PORT || 3000;
 
 /** this project needs a db !! **/ 
 // mongoose.connect(process.env.DB_URI);
+console.log(process.env.MONGO_URI)
 
 app.use(cors());
 
@@ -75,12 +77,6 @@ app.use('/public', express.static(process.cwd() + '/public'));
 
 app.get('/', function(req, res){
   res.sendFile(process.cwd() + '/views/index.html');
-});
-
-  
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
 });
 
 
