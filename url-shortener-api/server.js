@@ -7,21 +7,77 @@ const bodyParser = require('body-parser')
 const dns = require('dns')
 const url = require('url')
 const util = require('util')
-const dotenv = require('dotenv').config()
+const cors = require('cors')
+require('dotenv').config()
 
-const cors = require('cors');
-
-let app = express();
 
 // Basic Configuration 
-var port = process.env.PORT || 3000;
-
-/** this project needs a db !! **/ 
-// mongoose.connect(process.env.DB_URI);
-console.log(process.env.MONGO_URI)
-
+let app = express();
 app.use(cors());
+try {
+  mongoose.connect(process.env.MONGO_URI, 
+    {useNewUrlParser: true, useUnifiedTopology: true})
+  } catch {
+    console.error("Can't make initial connection to Database");
+    
+  }
 
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', function() {
+  console.log('We have a database')
+})
+
+const urlSchema = new mongoose.Schema({
+  fullUrl: {type: String, required: true},
+  shortUrl: {type: String, required: true}
+})
+
+const errorSchema = new mongoose.Schema({
+  message: {type: String, required: true},
+  time: {type: Date, required: true},
+  inputUrl: {type: String, required: true}
+})
+
+const URL = mongoose.model('URL', urlSchema)
+const ERROR = mongoose.model("ERROR", errorSchema)
+
+let findByShortUrl = async (val) => {
+  let found = await URL.find({shortUrl: val}, (err, obj) => {
+    if (err) return err
+    return obj
+  })
+
+  return found
+}
+
+let handleUrlPost = async (req) => {
+  let path = req.headers.host + req.path + '/'
+  let fullVal = req.body.url
+
+  //  Make sure the fullUrl doesn't exist already
+  let found = await URL.find({fullUrl: fullVal}, (err, link) => {
+    if (err) console.error(err)
+    return link
+  })
+
+  if (found[0]) {
+    console.log("Using a found value", found)
+    return found[0]
+  } else { // Add to database if it doesn't have an entry
+    let shortVal = getShortURL()
+    let newUrl = new URL({fullUrl: fullVal, shortUrl: path + shortVal})
+    let obj = await newUrl.save()
+
+    return obj
+  }
+}
+
+let addErrorToDatabase = (msg) => {
+
+}
+
+// Helpers
 let getShortURL = () => {
   // Get UTF-16 decimal representation
   let getNum = () => Math.floor(Math.random() * 93 + 33)
@@ -51,17 +107,16 @@ let isValidURL = async (bodyURL) => {
   return valid
 }
 
+// Routing
 app.post('/api/shorturl', 
   bodyParser.urlencoded({extended: true}), 
   async (req, res) => {
-    let path = req.headers.host + req.path + '/'
     let isValid = await isValidURL(req.body.url)
     
-    if (isValid) {
-      let short = getShortURL()
-      // Add to Database
-      //  Make sure the shortened url doesn't exist already
-      res.json({orginal_url: req.body.url, short_url: path + short})
+    if (isValid) {  
+      let obj = await handleUrlPost(req)
+      console.log('REsponse', obj)
+      res.json({orginal_url: obj.fullUrl, short_url: obj.shortUrl})
     } else {
       res.json({error: "Invalid URL"})
     }
@@ -79,7 +134,7 @@ app.get('/', function(req, res){
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-
-app.listen(port, function () {
+// Start the app
+app.listen(process.env.PORT || 3000, function () {
   console.log('Node.js listening ...');
 });
