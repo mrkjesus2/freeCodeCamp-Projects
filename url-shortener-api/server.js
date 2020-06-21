@@ -50,19 +50,19 @@ let isValidURL = async (bodyURL) => {
 }
 
 app.post('/api/shorturl', 
-          bodyParser.urlencoded({extended: true}), 
-          async (req, res) => {
-
-  let isValid = await isValidURL(req.body.url)
-  
-  if (isValid) {
-    let short = getShortURL()
-    // Add to Database
-    //  Make sure the shortened url doesn't exist already
-    res.json({orginal_url: req.body.url, short_url: short})
-  } else {
-    res.json({error: "Invalid URL"})
-  }
+  bodyParser.urlencoded({extended: true}), 
+  async (req, res) => {
+    let path = req.headers.host + req.path + '/'
+    let isValid = await isValidURL(req.body.url)
+    
+    if (isValid) {
+      let short = getShortURL()
+      // Add to Database
+      //  Make sure the shortened url doesn't exist already
+      res.json({orginal_url: req.body.url, short_url: path + short})
+    } else {
+      res.json({error: "Invalid URL"})
+    }
 })
 
 app.get('/api/shorturl/:urlid?', (req, res) => {
