@@ -52,7 +52,6 @@ let findByShortUrl = async (val) => {
 }
 
 let handleUrlPost = async (req) => {
-  let path = req.headers.host + req.path + '/'
   let fullVal = req.body.url
 
   //  Make sure the fullUrl doesn't exist already
@@ -66,7 +65,7 @@ let handleUrlPost = async (req) => {
     return found[0]
   } else { // Add to database if it doesn't have an entry
     let shortVal = getShortURL()
-    let newUrl = new URL({fullUrl: fullVal, shortUrl: path + shortVal})
+    let newUrl = new URL({fullUrl: fullVal, shortUrl: shortVal})
     let obj = await newUrl.save()
 
     return obj
@@ -111,21 +110,26 @@ let isValidURL = async (bodyURL) => {
 app.post('/api/shorturl', 
   bodyParser.urlencoded({extended: true}), 
   async (req, res) => {
+    let path = req.headers.host + req.path + '/'
     let isValid = await isValidURL(req.body.url)
     
     if (isValid) {  
       let obj = await handleUrlPost(req)
-      console.log('REsponse', obj)
-      res.json({orginal_url: obj.fullUrl, short_url: obj.shortUrl})
+      
+      res.json({
+        orginal_url: obj.fullUrl, 
+        short_url: path + obj.shortUrl
+      })
     } else {
       res.json({error: "Invalid URL"})
     }
 })
 
-app.get('/api/shorturl/:urlid?', (req, res) => {
-  // Lookup url in database
+app.get('/api/shorturl/:urlid?', async (req, res) => {
+  let found = await findByShortUrl(req.params.urlid)
   // Redirect to URL target
-  res.json({message: req.params.urlid})
+  console.log(found[0])
+  res.redirect(found[0].fullUrl)
 })
 
 app.use('/public', express.static(process.cwd() + '/public'));
