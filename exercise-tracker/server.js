@@ -30,6 +30,15 @@ app.get('/api/exercise/log:userId?:from?:to?:limit?', (req, res) => {
   console.log('limit', req.query.limit)
 })
 
+app.get('/api/exercise/users', (req, res, next) => {
+  user.find({}, (err, user) => {
+    if (err) next(err)
+    let users = []
+    users.push(user)
+    res.json({users})
+  })
+})
+
 app.post('/api/exercise/new-user', (req, res, next) => {
   let newUser = new user({name: req.body.username})
   
