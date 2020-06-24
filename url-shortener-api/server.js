@@ -8,6 +8,7 @@ const dns = require('dns')
 const url = require('url')
 const util = require('util')
 const cors = require('cors')
+const URL = require('./models/url')
 require('dotenv').config()
 
 
@@ -28,26 +29,19 @@ db.once('open', function() {
   console.log('We have a database')
 })
 
-const urlSchema = new mongoose.Schema({
-  fullUrl: {type: String, required: true},
-  shortUrl: {type: String, required: true}
-})
+// const urlSchema = new mongoose.Schema({
+//   fullUrl: {type: String, required: true},
+//   shortUrl: {type: String, required: true}
+// })
 
-const errorSchema = new mongoose.Schema({
-  message: {type: String, required: true},
-  time: {type: Date, required: true},
-  inputUrl: {type: String, required: true}
-})
 
-const URL = mongoose.model('URL', urlSchema)
-const ERROR = mongoose.model("ERROR", errorSchema)
+// const URL = mongoose.model('URL', urlSchema)
 
 let findByShortUrl = async (val) => {
   let found = await URL.find({shortUrl: val}, (err, obj) => {
     if (err) return err
     return obj
   })
-
   return found
 }
 
@@ -61,7 +55,6 @@ let handleUrlPost = async (req) => {
   })
 
   if (found[0]) {
-    console.log("Using a found value", found)
     return found[0]
   } else { // Add to database if it doesn't have an entry
     let shortVal = getShortURL()
@@ -72,9 +65,6 @@ let handleUrlPost = async (req) => {
   }
 }
 
-let addErrorToDatabase = (msg) => {
-
-}
 
 // Helpers
 let getShortURL = () => {
@@ -127,8 +117,7 @@ app.post('/api/shorturl',
 
 app.get('/api/shorturl/:urlid?', async (req, res) => {
   let found = await findByShortUrl(req.params.urlid)
-  // Redirect to URL target
-  console.log(found[0])
+  
   res.redirect(found[0].fullUrl)
 })
 
