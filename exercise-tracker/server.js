@@ -3,6 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 require('dotenv').config()
 
+const user = require('./models/user')
+
 const cors = require('cors')
 
 const mongoose = require('mongoose')
@@ -28,11 +30,12 @@ app.get('/api/exercise/log:userId?:from?:to?:limit?', (req, res) => {
   console.log('limit', req.query.limit)
 })
 
-let test = encodeURIComponent('userId=mark&from="earlier"')
-console.log(test)
-
-app.post('/api/exercise/new-user', (req, res) => {
-  console.log("Let's Make a new User")
+app.post('/api/exercise/new-user', (req, res, next) => {
+  let newUser = new user({name: req.body.username})
+  
+  newUser.save()
+        .then(d => res.json({username: d.name, _id: d._id}))
+        .catch(e => next(e))
 })
 
 app.post('/api/exercise/add', (req, res) => {
