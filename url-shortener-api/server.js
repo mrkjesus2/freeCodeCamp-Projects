@@ -9,6 +9,7 @@ const url = require('url')
 const util = require('util')
 const cors = require('cors')
 const URL = require('./models/url')
+const getShortUrl = require('./helpers/getShortUrl')
 require('dotenv').config()
 
 
@@ -57,28 +58,28 @@ let handleUrlPost = async (req) => {
   if (found[0]) {
     return found[0]
   } else { // Add to database if it doesn't have an entry
-    let shortVal = getShortURL()
+    let shortVal = getShortUrl()
     let newUrl = new URL({fullUrl: fullVal, shortUrl: shortVal})
     let obj = await newUrl.save()
 
     return obj
   }
 }
-
+console.log(getShortUrl())
 
 // Helpers
-let getShortURL = () => {
-  // Get UTF-16 decimal representation
-  let getNum = () => Math.floor(Math.random() * 93 + 33)
-  let urlLength = 6
-  let url = ''
+// let getShortURL = () => {
+//   // Get UTF-16 decimal representation
+//   let getNum = () => Math.floor(Math.random() * 93 + 33)
+//   let urlLength = 6
+//   let url = ''
   
-  for (let i = 0; i < urlLength; i++) {
-    url += String.fromCharCode(getNum())
-  }
+//   for (let i = 0; i < urlLength; i++) {
+//     url += String.fromCharCode(getNum())
+//   }
   
-  return url
-}
+//   return url
+// }
 
 
 let isValidURL = async (bodyURL) => {
