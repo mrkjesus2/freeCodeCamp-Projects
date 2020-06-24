@@ -1,11 +1,12 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+require('dotenv').config()
 
 const cors = require('cors')
 
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true} )
 
 app.use(cors())
 
@@ -18,6 +19,25 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+// http://localhost:3000/api/exercise/log?userId=mark&from=earlier&to=later&limit=10
+app.get('/api/exercise/log:userId?:from?:to?:limit?', (req, res) => {
+  console.log("Let's get the log");
+  console.log('user', req.query.userId)
+  console.log('from', req.query.from)
+  console.log('to', req.query.to)
+  console.log('limit', req.query.limit)
+})
+
+let test = encodeURIComponent('userId=mark&from="earlier"')
+console.log(test)
+
+app.post('/api/exercise/new-user', (req, res) => {
+  console.log("Let's Make a new User")
+})
+
+app.post('/api/exercise/add', (req, res) => {
+  console.log("Let's add an exercise")
+})
 
 // Not found middleware
 app.use((req, res, next) => {
