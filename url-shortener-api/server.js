@@ -4,12 +4,13 @@ const express = require('express')
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const dns = require('dns')
-const url = require('url')
-const util = require('util')
+// const dns = require('dns')
+// const url = require('url')
+// const util = require('util')
 const cors = require('cors')
 const URL = require('./models/url')
 const getShortUrl = require('./helpers/getShortUrl')
+const isValidUrl = require('./helpers/isValidUrl')
 require('dotenv').config()
 
 
@@ -65,7 +66,6 @@ let handleUrlPost = async (req) => {
     return obj
   }
 }
-console.log(getShortUrl())
 
 // Helpers
 // let getShortURL = () => {
@@ -82,27 +82,27 @@ console.log(getShortUrl())
 // }
 
 
-let isValidURL = async (bodyURL) => {
-  let dnsLookup = util.promisify(dns.lookup)
-  let parsed = url.parse(bodyURL).hostname
-  let result = dnsLookup(parsed)
+// let isValidURL = async (bodyURL) => {
+//   let dnsLookup = util.promisify(dns.lookup)
+//   let parsed = url.parse(bodyURL).hostname
+//   let result = dnsLookup(parsed)
 
-  let valid = result
-    .then(result => true)
-    .catch(err => {
-      // TODO# Add error to database?
-      return false
-    })
+//   let valid = result
+//     .then(result => true)
+//     .catch(err => {
+//       // TODO# Add error to database?
+//       return false
+//     })
 
-  return valid
-}
+//   return valid
+// }
 
 // Routing
 app.post('/api/shorturl', 
   bodyParser.urlencoded({extended: true}), 
   async (req, res) => {
     let path = req.headers.host + req.path + '/'
-    let isValid = await isValidURL(req.body.url)
+    let isValid = await isValidUrl(req.body.url)
     
     if (isValid) {  
       let obj = await handleUrlPost(req)
