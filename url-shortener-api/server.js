@@ -22,7 +22,7 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 
 
-getShortUrl: () => {
+let getShortUrl = () => {
   // Get UTF-16 decimal representation
   let getNum = () => Math.floor(Math.random() * 93 + 33)
   let urlLength = 6
