@@ -4,15 +4,12 @@ const express = require('express')
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-// const dns = require('dns')
-// const url = require('url')
-// const util = require('util')
 const cors = require('cors')
 const URL = require('./models/url')
 const getShortUrl = require('./helpers/getShortUrl')
 const isValidUrl = require('./helpers/isValidUrl')
+const url = require('./helpers/url')
 require('dotenv').config()
-
 
 // Basic Configuration 
 let app = express();
@@ -31,13 +28,6 @@ db.once('open', function() {
   console.log('We have a database')
 })
 
-// const urlSchema = new mongoose.Schema({
-//   fullUrl: {type: String, required: true},
-//   shortUrl: {type: String, required: true}
-// })
-
-
-// const URL = mongoose.model('URL', urlSchema)
 
 let findByShortUrl = async (val) => {
   let found = await URL.find({shortUrl: val}, (err, obj) => {
@@ -59,7 +49,7 @@ let handleUrlPost = async (req) => {
   if (found[0]) {
     return found[0]
   } else { // Add to database if it doesn't have an entry
-    let shortVal = getShortUrl()
+    let shortVal = url.getShort()
     let newUrl = new URL({fullUrl: fullVal, shortUrl: shortVal})
     let obj = await newUrl.save()
 
@@ -67,42 +57,13 @@ let handleUrlPost = async (req) => {
   }
 }
 
-// Helpers
-// let getShortURL = () => {
-//   // Get UTF-16 decimal representation
-//   let getNum = () => Math.floor(Math.random() * 93 + 33)
-//   let urlLength = 6
-//   let url = ''
-  
-//   for (let i = 0; i < urlLength; i++) {
-//     url += String.fromCharCode(getNum())
-//   }
-  
-//   return url
-// }
-
-
-// let isValidURL = async (bodyURL) => {
-//   let dnsLookup = util.promisify(dns.lookup)
-//   let parsed = url.parse(bodyURL).hostname
-//   let result = dnsLookup(parsed)
-
-//   let valid = result
-//     .then(result => true)
-//     .catch(err => {
-//       // TODO# Add error to database?
-//       return false
-//     })
-
-//   return valid
-// }
 
 // Routing
 app.post('/api/shorturl', 
   bodyParser.urlencoded({extended: true}), 
   async (req, res) => {
     let path = req.headers.host + req.path + '/'
-    let isValid = await isValidUrl(req.body.url)
+    let isValid = await url.isValid(req.body.url)
     
     if (isValid) {  
       let obj = await handleUrlPost(req)
