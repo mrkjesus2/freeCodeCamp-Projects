@@ -1,6 +1,8 @@
 let util = require('util')
 let dns = require('dns')
 let url = require('url')
+const URL = require('../models/url')
+
 
 module.exports = {
     isValid: async (bodyUrl) => {
@@ -29,5 +31,25 @@ module.exports = {
         }
         
         return url
-    }
+    },
+
+    handlePostReq: async function(req) {
+        let fullVal = req.body.url
+        
+        //  Make sure the fullUrl doesn't exist already
+        let found = await URL.find({fullUrl: fullVal}, (err, link) => {
+          if (err) console.error(err)
+          return link
+        })
+      
+        if (found[0]) {
+          return found[0]
+        } else { // Add to database if it doesn't have an entry
+          let shortVal = this.getShort()
+          let newUrl = new URL({fullUrl: fullVal, shortUrl: shortVal})
+          let obj = await newUrl.save()
+      
+          return obj
+        }
+      }
 }
