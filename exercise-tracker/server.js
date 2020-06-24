@@ -47,8 +47,19 @@ app.post('/api/exercise/new-user', (req, res, next) => {
         .catch(e => next(e))
 })
 
-app.post('/api/exercise/add', (req, res) => {
-  console.log("Let's add an exercise")
+//5ef3d74a50a04f51844655e8
+app.post('/api/exercise/add', (req, res, next) => {
+  user.findById(req.body.userId, (err, currUser) => {
+    if (err) next(err)
+    currUser.exercises.push({
+          description: req.body.description,
+          duration: req.body.duration,
+          date: new Date(req.body.date)
+    })
+    currUser.save()
+            .then(d => res.json(d))
+            .catch(err => next(err))
+  })
 })
 
 // Not found middleware
