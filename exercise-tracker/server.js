@@ -54,10 +54,11 @@ app.post('/api/exercise/new-user', (req, res, next) => {
 app.post('/api/exercise/add', (req, res, next) => {
   user.findById(req.body.userId, (err, currUser) => {
     if (err) next(err)
+    let date = req.body.date
     currUser.exercises.push({
           description: req.body.description,
           duration: req.body.duration,
-          date: new Date(req.body.date)
+          date: date ? new Date(req.body.date) : new Date()
     })
     currUser.save()
             .then(d => res.json(d))
