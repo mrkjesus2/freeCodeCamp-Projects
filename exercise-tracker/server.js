@@ -31,10 +31,13 @@ app.get('/api/exercise/log:userId?:from?:to?:limit?', (req, res) => {
 })
 
 app.get('/api/exercise/users', (req, res, next) => {
-  user.find({}, (err, user) => {
+  user.find({}, (err, people) => {
     if (err) next(err)
     let users = []
-    users.push(user)
+    for (person in people) {
+      let curr = people[person]
+      users.push({username: curr.name, _id: curr._id})
+    }
     res.json({users})
   })
 })
