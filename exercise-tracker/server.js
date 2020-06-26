@@ -21,13 +21,32 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
-// http://localhost:3000/api/exercise/log?userId=mark&from=earlier&to=later&limit=10
-app.get('/api/exercise/log:userId?:from?:to?:limit?', (req, res) => {
-  console.log("Let's get the log");
-  console.log('user', req.query.userId)
-  console.log('from', req.query.from)
-  console.log('to', req.query.to)
-  console.log('limit', req.query.limit)
+app.get('/api/exercise/log:userId?:from?:to?:limit?', (req, res, next) => {
+  let fromDate = req.query.from ? new Date(req.query.from) : new Date('1920-1-1')
+  let toDate = req.query.to ? new Date(req.query.to) : new Date()
+
+  user.aggregate([
+        { $match: {'_id': mongoose.Types.ObjectId(req.query.userId)} },
+        { $match: {'exercises.date': {$gte: fromDate, $lte: toDate}} }, 
+        { $unwind: '$exercises'}, 
+        { $match: {'exercises.date': {$gte: fromDate, $lte: toDate}} }
+      ])
+      .project({
+        _id: 0,
+        desc: '$exercises.description', 
+        duration: '$exercises.duration', 
+        date: '$exercises.date'
+      })
+      .then(async result => {
+        let arr = result.slice(0, req.query.limit || result.length)
+        let resObj = {
+          userId: req.query.userId,
+          count: result.length,
+          log: result
+        }
+        res.json(resObj)
+      })
+      .catch(err => next(err))
 })
 
 app.get('/api/exercise/users', (req, res, next) => {
@@ -50,7 +69,7 @@ app.post('/api/exercise/new-user', (req, res, next) => {
         .catch(e => next(e))
 })
 
-//5ef3d74a50a04f51844655e8
+
 app.post('/api/exercise/add', (req, res, next) => {
   user.findById(req.body.userId, (err, currUser) => {
     if (err) next(err)
