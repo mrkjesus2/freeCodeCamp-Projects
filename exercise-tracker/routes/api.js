@@ -23,7 +23,7 @@ route.get('/log:userId?:from?:to?:limit?', (req, res, next) => {
           let resObj = {
             userId: req.query.userId,
             count: result.length,
-            log: result
+            log: arr
           }
           res.json(resObj)
         })
