@@ -9,11 +9,12 @@ let issueSchema = new mongoose.Schema({
     'assigned_to': String,
     'status_text': String,
     'created_on': Date,
-    'updated_on': Date
+    'updated_on': Date,
+    'open': Boolean
 })
 
 let projectSchema = new mongoose.Schema({
-    name: {type: String, required: true},
+    name: {type: String, required: true, unique: true},
     issues: [issueSchema]
 })
 

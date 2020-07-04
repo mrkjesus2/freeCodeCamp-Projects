@@ -54,21 +54,22 @@ suite('Functional Tests', function() {
         .post('/api/issues/test')
         .send(validReqObj)
         .end(function(err, res){
-          let resObj = res.body.json
+          let resObj = res.body[0]
+          console.log(resObj)
 
           assert.equal(res.status, 200);
-          expect(resObj.issue_title).to.equal(validReqObj.issue_title)
-          expect(resObj.issue_text).to.equal(validReqObj.issue_text)
-          expect(resObj.created_by).to.equal(validReqObj.created_by)
-          expect(resObj.assigned_to).to.equal(validReqObj.assigned_to)
-          expect(resObj.status_text).to.equal(validReqObj.status_text)
+          assert.equal(resObj.issue_title, validReqObj.issue_title, 'issue_title should match' )
+          assert.equal(resObj.issue_text, validReqObj.issue_text, 'issue_text should match' )
+          assert.equal(resObj.created_by, validReqObj.created_by, 'created_by should match' )
+          assert.equal(resObj.assigned_to, validReqObj.assigned_to, 'assigned_to should match' )
+          assert.equal(resObj.status_text, validReqObj.status_text, 'status_text should match' )
 
-          expect(resObj.created_on).to.exist
-          expect(resObj.updated_on).to.exist
+          assert.isOk(resObj.created_on, 'created_on should exist')
+          assert.isOk(resObj.updated_on, 'updated_on should exist')
 
-          expect(resObj.open).to.be.a('boolean')
-          expect(resObj._id).to.exist
-          expect(resObj._id).to.be.a('string')
+          assert.isBoolean(resObj.open, 'open should be a boolean')
+          assert.isOk(resObj._id, '_id should exist')
+          assert.isString(resObj._id)
 
           testObj = resObj
          done();
@@ -80,12 +81,12 @@ suite('Functional Tests', function() {
           .post('/api/issues/test')
           .send(validReqObj)
           .end(function(err, res) {
-            let resObj = res.body.json
+            let resObj = res.body
 
-            expect(res.status).to.equal(200)
-            expect(resObj.issue_title).to.exist
-            expect(resObj.issue_text).to.exist
-            expect(resObj.created_by).to.exist
+            assert.equal(res.status, 200, 'res.status should be 200')
+            assert.isOk(resObj.issue_title, 'issue_title should exist')
+            assert.isOk(resObj.issue_text, 'issue_text should exist')
+            assert.isOk(resObj.created_by, 'created_by should exist')
             done()
           })
       });
@@ -95,7 +96,7 @@ suite('Functional Tests', function() {
           .post('api/issues/test')
           .send(invalidResObj)
           .end(function(err, res) {
-            assert.notEqual(res.status, 200)
+            assert.notEqual(res.status, 200, 'res.status should not be 200')
             done()
           })
       });
@@ -109,7 +110,7 @@ suite('Functional Tests', function() {
           .post('api/issues/test')
           .send({})
           .end(function(err, res) {
-            expect(res.body).to.equal('no updated field sent.')
+            assert.equal(res.body, 'no updated field sent.', 'res.body should be: no updated field sent.')
             done()
           })
       });
@@ -119,11 +120,11 @@ suite('Functional Tests', function() {
           .post('api/issues/test')
           .send({
             _id: testObj._id,
-            'issue-title': 'New IssueTitle'
+            'issue_title': 'New IssueTitle'
           })
           .end(function(err, res) {
-            expect(res.status).to.equal(200)
-            expect(res.body).to.equal('Successfully updated')
+            assert.equal(res.status, 200, 'res.status should be 200')
+            assert.equal(res.body, 'Successfully updated')
             done()
           })
       });
@@ -131,11 +132,11 @@ suite('Functional Tests', function() {
       test('Multiple fields to update', function(done) {
         postToServer({
           _id: testObj._id,
-          'issue-text': 'New issue Text',
+          'issue_text': 'New issue Text',
           open: !testObj.open
         },
           (err, res) => {
-            expect(res.body.to.equal('Successfully updated'))
+            assert.equal(res.body, 'Successfully updated')
             done()
           }
         )
@@ -170,7 +171,7 @@ suite('Functional Tests', function() {
           open: testObj.open
         },
           (err, res) => {
-            expect(res.status).to.equal(200)
+            assert.equal(res.status, 200)
             // More here
             done()
           })
@@ -183,7 +184,7 @@ suite('Functional Tests', function() {
           open: testObj.open
         },
           (err, res) => {
-            expect(res.status).to.equal(200)
+            assert.equal(res.status, 200)
             // More here
             done()
           })
@@ -198,7 +199,7 @@ suite('Functional Tests', function() {
             .delete('/api/issues/test')
             .send({})
             .end((err, res) => {
-              expect(res.status).to.not.equal(200)
+              assert.equal(res.status, 200)
               done()
             })
       });
@@ -208,7 +209,7 @@ suite('Functional Tests', function() {
             .delete('api/issues/test')
             .send({id: testObj._id})
             .end((err, res) => {
-              expect(res.status.to.equal(200))
+              assert.equal(res.status, 200)
               done()
             })
       });
