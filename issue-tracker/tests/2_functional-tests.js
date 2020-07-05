@@ -10,14 +10,14 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
-const { expect } = require('chai');
+
 
 chai.use(chaiHttp);
 
 let testObj
-
+// console.log(server)
 let postToServer = (obj, cb) => {
-  return chai.request(server)
+  return chai.request('http://localhost:3000/')
             .post('api/issues/test')
             .send(obj)
             .end(cb)
@@ -50,13 +50,10 @@ suite('Functional Tests', function() {
       }
 
       test('Every field filled in', function(done) {
-       chai.request(server)
-        .post('/api/issues/test')
-        .send(validReqObj)
-        .end(function(err, res){
+       postToServer(validReqObj, function(err, res){
           let resObj = res.body[0]
-          console.log(resObj)
-
+          testObj = resObj
+          console.log('TEst', resObj)
           assert.equal(res.status, 200);
           assert.equal(resObj.issue_title, validReqObj.issue_title, 'issue_title should match' )
           assert.equal(resObj.issue_text, validReqObj.issue_text, 'issue_text should match' )
@@ -70,83 +67,70 @@ suite('Functional Tests', function() {
           assert.isBoolean(resObj.open, 'open should be a boolean')
           assert.isOk(resObj._id, '_id should exist')
           assert.isString(resObj._id)
-
-          testObj = resObj
-         done();
+          
+          done();
         });
       });
       
-      test('Required fields filled in', function(done) {
-        chai.request(server)
-          .post('/api/issues/test')
-          .send(validReqObj)
-          .end(function(err, res) {
-            let resObj = res.body
+      test.skip('Required fields filled in', function(done) {
+        postToServer(validReqObj, function(err, res) {
+          let resObj = res.body
 
-            assert.equal(res.status, 200, 'res.status should be 200')
-            assert.isOk(resObj.issue_title, 'issue_title should exist')
-            assert.isOk(resObj.issue_text, 'issue_text should exist')
-            assert.isOk(resObj.created_by, 'created_by should exist')
-            done()
-          })
+          assert.equal(res.status, 200, 'res.status should be 200')
+          assert.isOk(resObj.issue_title, 'issue_title should exist')
+          assert.isOk(resObj.issue_text, 'issue_text should exist')
+          assert.isOk(resObj.created_by, 'created_by should exist')
+          done()
+        })
       });
       
-      test('Missing required fields', function(done) {
-        chai.request(server)
-          .post('api/issues/test')
-          .send(invalidResObj)
-          .end(function(err, res) {
-            assert.notEqual(res.status, 200, 'res.status should not be 200')
-            done()
-          })
+      test.skip('Missing required fields', function(done) {
+        postToServer(invalidResObj, function(err, res) {
+          assert.notEqual(res.status, 200, 'res.status should not be 200')
+          done()
+        })
       });
       
     });
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      test('No body', function(done) {
-        chai.request(server)
-          .post('api/issues/test')
-          .send({})
-          .end(function(err, res) {
-            assert.equal(res.body, 'no updated field sent.', 'res.body should be: no updated field sent.')
-            done()
-          })
+      test.skip('No body', function(done) {
+        chai.request(server) // This be the problem
+        postToServer({}, function(err, res) {
+          assert.equal(res.body, 'no updated field sent.', 'res.body should be: no updated field sent.')
+          done()
+        })
       });
       
-      test('One field to update', function(done) {
-        chai.request(server)
-          .post('api/issues/test')
-          .send({
-            _id: testObj._id,
-            'issue_title': 'New IssueTitle'
-          })
-          .end(function(err, res) {
-            assert.equal(res.status, 200, 'res.status should be 200')
-            assert.equal(res.body, 'Successfully updated')
-            done()
-          })
+      test.skip('One field to update', function(done) {
+        postToServer({
+          _id: testObj._id,
+          'issue_title': 'New IssueTitle'
+        }, function(err, res) {
+          assert.equal(res.status, 200, 'res.status should be 200')
+          assert.equal(res.body, 'Successfully updated')
+          done()
+        })
       });
       
-      test('Multiple fields to update', function(done) {
+      test.skip('Multiple fields to update', function(done) {
         postToServer({
           _id: testObj._id,
           'issue_text': 'New issue Text',
           open: !testObj.open
         },
-          (err, res) => {
-            assert.equal(res.body, 'Successfully updated')
-            done()
-          }
-        )
+        (err, res) => {
+          assert.equal(res.body, 'Successfully updated')
+          done()
+        })
       });
       
     });
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
       
-      test('No filter', function(done) {
+      test.skip('No filter', function(done) {
         chai.request(server)
         .get('/api/issues/test')
         .query({})
@@ -166,49 +150,50 @@ suite('Functional Tests', function() {
         });
       });
       
-      test('One filter', function(done) {
+      test.skip('One filter', function(done) {
         getFromServer({
           open: testObj.open
         },
-          (err, res) => {
-            assert.equal(res.status, 200)
-            // More here
-            done()
-          })
-        
+        (err, res) => {
+          assert.equal(res.status, 200)
+          // More here
+          done()
+        })
       });
       
-      test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
+      test.skip('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         getFromServer({
           id: testObj._id,
           open: testObj.open
         },
-          (err, res) => {
-            assert.equal(res.status, 200)
-            // More here
-            done()
-          })
+        (err, res) => {
+          assert.equal(res.status, 200)
+          // More here
+          done()
+        })
       });
       
     });
     
     suite('DELETE /api/issues/{project} => text', function() {
       
-      test('No _id', function(done) {
+      test.skip('No _id', function(done) {
         chai.request(server)
             .delete('/api/issues/test')
             .send({})
             .end((err, res) => {
-              assert.equal(res.status, 200)
-              done()
+                if (err) console.log(err)
+                assert.equal(res.status, 200)
+                done()
             })
       });
       
-      test('Valid _id', function(done) {
+      test.skip('Valid _id', function(done) {
         chai.request(server)
             .delete('api/issues/test')
             .send({id: testObj._id})
             .end((err, res) => {
+              if (err) console.log(err)
               assert.equal(res.status, 200)
               done()
             })

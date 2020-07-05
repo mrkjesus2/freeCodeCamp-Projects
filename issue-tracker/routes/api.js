@@ -31,6 +31,7 @@ module.exports = function (app) {
     .get(function (req, res){
       var project = req.params.project;
       // console.log(Project.find(project))
+      res.send('ok')
     })
     
     .post(function (req, res){
@@ -40,6 +41,7 @@ module.exports = function (app) {
         if (err) return err
         
         if (doc.length > 0) {
+          console.log('Found', doc[0].issues)
           res.json(doc[0].issues)
         } else {
           let project = new Project({
@@ -58,6 +60,7 @@ module.exports = function (app) {
     
           project.save((err, doc) => {
             if (err) console.log(err)
+            console.log('Created', doc.issues)
             res.json(doc.issues)
           })
         }
@@ -68,13 +71,24 @@ module.exports = function (app) {
     
     .put(function (req, res){
       var project = req.params.project;
-      
+      res.send('ok')
     })
     
     .delete(function (req, res){
       var project = req.params.project;
-
-      
+      // console.log(req.body)
+      // if (id) {
+      //   Project.deleteOne({_id: id}, (err) => {
+      //     if (err) {
+      //       console.log('DELETE ERROR', err)
+      //       res.send("failed: 'could not delete '" + id)
+      //     }
+      //     res.send("succes: 'deleted '" + id)
+      //   })
+      // } else {
+      //   res.send('id error')
+      // }
+      res.send('ok')
     });
     
 };
