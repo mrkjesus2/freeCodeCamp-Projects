@@ -206,7 +206,7 @@ suite('Functional Tests', function() {
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         getFromServer({
           created_by: 'Chai',
-          assigned_by: 'Chai'
+          assigned_to: 'Chai'
         },
         (err, res) => {
           assert.equal(res.status, 200)

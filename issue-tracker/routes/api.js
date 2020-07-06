@@ -30,11 +30,24 @@ module.exports = function (app) {
   
     .get(function (req, res){
       var project = req.params.project;
-
+        
       Project.findOne({name: project}, (err, doc) => {
         if (err) res.send('There was a problem getting the project')
+        
+        let issues = doc.issues.filter(issue => {
+          let shouldReturn = true
 
-        res.json(doc.issues)
+          for (let prop in req.query) {
+            if (issue[prop] !== req.query[prop]) {
+              shouldReturn = false
+            }
+          }
+
+          if (shouldReturn) {
+            return issue
+          }
+        })
+        res.json(issues)
       })
     })
     
