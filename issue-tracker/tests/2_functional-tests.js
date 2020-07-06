@@ -53,8 +53,8 @@ suite('Functional Tests', function() {
        postToServer(validReqObj, function(err, res){
           let resObj = res.body[0]
           testObj = resObj
-          console.log('TEst', resObj)
-          assert.equal(res.status, 200);
+
+          // assert.equal(res.status, 200);
           assert.equal(resObj.issue_title, validReqObj.issue_title, 'issue_title should match' )
           assert.equal(resObj.issue_text, validReqObj.issue_text, 'issue_text should match' )
           assert.equal(resObj.created_by, validReqObj.created_by, 'created_by should match' )
@@ -177,24 +177,27 @@ suite('Functional Tests', function() {
     
     suite('DELETE /api/issues/{project} => text', function() {
       
-      test.skip('No _id', function(done) {
+      test('No _id', function(done) {
         chai.request(server)
             .delete('/api/issues/test')
             .send({})
             .end((err, res) => {
                 if (err) console.log(err)
+                // console.log('TEST', res)
                 assert.equal(res.status, 200)
+                assert.equal(res.text, 'id error')
                 done()
             })
       });
       
-      test.skip('Valid _id', function(done) {
+      test('Valid _id', function(done) {
         chai.request(server)
-            .delete('api/issues/test')
-            .send({id: testObj._id})
+            .delete('/api/issues/test')
+            .send({_id: testObj._id})
             .end((err, res) => {
               if (err) console.log(err)
               assert.equal(res.status, 200)
+              assert.equal(res.text, 'deleted ' + testObj._id)
               done()
             })
       });

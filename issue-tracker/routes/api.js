@@ -75,20 +75,34 @@ module.exports = function (app) {
     })
     
     .delete(function (req, res){
-      var project = req.params.project;
-      // console.log(req.body)
-      // if (id) {
-      //   Project.deleteOne({_id: id}, (err) => {
-      //     if (err) {
-      //       console.log('DELETE ERROR', err)
-      //       res.send("failed: 'could not delete '" + id)
-      //     }
-      //     res.send("succes: 'deleted '" + id)
-      //   })
-      // } else {
-      //   res.send('id error')
-      // }
-      res.send('ok')
+      let issueId = req.body._id
+      let handleError = () => {
+        res.send('could not delete ' + issueId)
+      }
+
+      if (issueId) {
+        Project.findOne({name: req.params.project},
+          (err, project) =>{
+            if (err) handleError()
+            
+            if (project.issues.length === 1) {
+              // Delete the project if last issue
+              Project.findByIdAndRemove(project._id, (err, doc) => {
+                if (err) handleError()
+                res.send('deleted ' + issueId)
+              })
+            } else {
+              // Remove the issue
+              project.issues.id(issueId).remove()
+              project.save(err => {
+                if (err) handleError
+                res.send('deleted ' + issueId)
+              })
+            }
+          });
+      } else {
+        res.send('id error')
+      }
     });
     
 };
