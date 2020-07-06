@@ -10,9 +10,50 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
+var Project = require('../models/project')
 
 
 chai.use(chaiHttp);
+
+before ('populateDB', async () => {
+  let project = new Project({
+    name: 'test project',
+    issues:[
+      {
+        issue_title: 'Issue1',
+        issue_text: 'whatever',
+        created_by: 'Chai',
+        assigned_to: 'Mocha',
+        status_text: 'something'
+      },
+      {
+        issue_title: 'Issue2',
+        issue_text: 'what now',
+        created_by: 'Chai',
+        assigned_to: 'Chai',
+        status_text: 'something else'
+      },
+      {
+        issue_title: 'Issue3',
+        issue_text: 'dont care',
+        created_by: 'Mocha',
+        assigned_to: 'Chai',
+        status_text: 'something'
+      }
+     
+    ]
+  })
+
+  await project.save(err => {
+    if (err) throw err
+    console.log('ITEM IN THE DATABASE')
+  })
+})
+
+after('removeTestProject', async () => {
+  const res = await Project.remove({name: 'test project'})
+  console.log('REMOVED TEST ITEM', res.deletedCount)
+})
 
 let testObj
 // console.log(server)
@@ -25,7 +66,7 @@ let postToServer = (obj, cb) => {
 
 let getFromServer = (obj, cb) => {
   return chai.request(server)
-            .get('api/issues/test')
+            .get('/api/issues/test project')
             .query(obj)
             .end(cb)
 }
@@ -130,7 +171,7 @@ suite('Functional Tests', function() {
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
       
-      test.skip('No filter', function(done) {
+      test('No filter', function(done) {
         chai.request(server)
         .get('/api/issues/test')
         .query({})
@@ -150,25 +191,27 @@ suite('Functional Tests', function() {
         });
       });
       
-      test.skip('One filter', function(done) {
+      test('One filter', function(done) {
         getFromServer({
-          open: testObj.open
+          created_by: 'Chai'
         },
         (err, res) => {
           assert.equal(res.status, 200)
-          // More here
+          assert.isArray(res.body)
+          assert.equal(res.body.length, 2)
           done()
         })
       });
-      
-      test.skip('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
+
+      test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         getFromServer({
-          id: testObj._id,
-          open: testObj.open
+          created_by: 'Chai',
+          assigned_by: 'Chai'
         },
         (err, res) => {
           assert.equal(res.status, 200)
-          // More here
+          assert.isArray(res.body)
+          assert.equal(res.body.length, 1)
           done()
         })
       });

@@ -30,8 +30,12 @@ module.exports = function (app) {
   
     .get(function (req, res){
       var project = req.params.project;
-      // console.log(Project.find(project))
-      res.send('ok')
+
+      Project.findOne({name: project}, (err, doc) => {
+        if (err) res.send('There was a problem getting the project')
+
+        res.json(doc.issues)
+      })
     })
     
     .post(function (req, res){
@@ -41,7 +45,7 @@ module.exports = function (app) {
         if (err) return err
         
         if (doc.length > 0) {
-          console.log('Found', doc[0].issues)
+          // console.log('Found', doc[0].issues)
           res.json(doc[0].issues)
         } else {
           let project = new Project({
@@ -60,7 +64,7 @@ module.exports = function (app) {
     
           project.save((err, doc) => {
             if (err) console.log(err)
-            console.log('Created', doc.issues)
+            // console.log('Created', doc.issues)
             res.json(doc.issues)
           })
         }
