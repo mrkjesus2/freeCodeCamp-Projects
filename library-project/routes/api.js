@@ -9,10 +9,19 @@
 'use strict';
 
 var expect = require('chai').expect;
-var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
-const MONGODB_CONNECTION_STRING = process.env.DB;
+var mongoose = require('mongoose')
 //Example connection: MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {});
+
+mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true})
+let db = mongoose.connection
+
+db.on('error', (err) => {
+  console.log('Database Error:', err)
+})
+db.on('open', () => {
+  console.log('We have a database')
+})
 
 module.exports = function (app) {
 
