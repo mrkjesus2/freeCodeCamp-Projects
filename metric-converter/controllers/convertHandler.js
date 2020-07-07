@@ -22,7 +22,7 @@ function ConvertHandler() {
       return parseFloat(numArray[0]) / parseFloat(numArray[1])
     }
 
-    return isValid ? parseFloat(nums) : 'invalid number'
+    return isValid ? parseFloat(nums) : null
   };
   
   this.getUnit = function(input) {
@@ -30,7 +30,7 @@ function ConvertHandler() {
 
     let unit = input.match(unitRegex).join('')
 
-    return validUnits.indexOf(unit) === -1 ? 'invalid unit' : unit
+    return validUnits.indexOf(unit) === -1 ? null : unit
   };
   
   this.getReturnUnit = function(initUnit) {

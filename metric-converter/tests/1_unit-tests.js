@@ -38,7 +38,7 @@ suite('Unit Tests', function(){
     });
     
     test('Invalid Input (double fraction)', function(done) {
-      assert.equal(convertHandler.getNum('5/2/4mi'), 'invalid number')
+      assert.equal(convertHandler.getNum('5/2/4mi'), null)
       done();
     });
     
@@ -60,7 +60,7 @@ suite('Unit Tests', function(){
     });
     
     test('Unknown Unit Input', function(done) {
-      assert.equal(convertHandler.getUnit('2mark'), 'invalid unit')
+      assert.equal(convertHandler.getUnit('2mark'), null)
       done();
     });  
     
