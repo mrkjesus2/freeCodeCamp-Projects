@@ -13,6 +13,13 @@ var server = require('../server');
 
 chai.use(chaiHttp);
 
+let queryServer = (obj, cb) => {
+  chai.request(server)
+      .get('/api/convert')
+      .query(obj)
+      .end(cb)
+}
+
 suite('Functional Tests', function() {
 
   suite('Routing Tests', function() {
@@ -34,23 +41,40 @@ suite('Functional Tests', function() {
       });
       
       test('Convert 32g (invalid input unit)', function(done) {
-        
-        //done();
+         queryServer({input: '32g'}, (err, res) => {
+           assert.equal(res.status, 200)
+          //  assert.equal(res.body.initNum, 32)
+          //  assert.equal(res.body.initUnit, 'g')
+           assert.equal(res.text, 'invalid unit')
+           done();
+         })
       });
       
       test('Convert 3/7.2/4kg (invalid number)', function(done) {
-        
-        //done();
+        queryServer({input: '3/7.2/4kq'}, (err, res) => {
+          assert.equal(res.status, 200)
+          assert.equal(res.text, 'invalid number')
+          done();
+        })
       });  
       
       test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
-        
-        //done();
+        queryServer({input: '3/7.2/4kilomegagram'}, (err, res) => {
+          assert.equal(res.status, 200)
+          assert.equal(res.text, 'invalid number and input'))
+          done();
+        })
       });
       
       test('Convert kg (no number)', function(done) {
-        
-        //done();
+        queryServer({input: 'kg'}, (err, res) => {
+          assert.equal(res.status, 200)
+          assert.equal(res.body.initNum, '')
+          assert.equal(res.body.initUnit, 'kg')
+          assert.approximately(res.body.returnNum, 2.20462, 0.1)
+          assert.equal(res.body.returnUnit, 'lb')
+          done();
+        })
       });
       
     });
