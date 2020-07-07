@@ -31,7 +31,7 @@ function ConvertHandler() {
 
     let unit = input.match(unitRegex).join('')
 
-    return validUnits.indexOf(unit) === -1 ? null : unit
+    return validUnits.indexOf(unit) === -1 ? null : unit.toLowerCase()
   };
   
   this.getReturnUnit = function(initUnit) {
