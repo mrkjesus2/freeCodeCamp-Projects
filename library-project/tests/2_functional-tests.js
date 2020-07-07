@@ -15,6 +15,19 @@ chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
 
+let queryServer = (obj, cb) => {
+  chai.request(server)
+      .get('/api/books')
+      .query(obj)
+      .end(cb)
+}
+
+let postServer = (obj, cb) => {
+  chai.request(server)
+      .post('/api/books')
+      .end(cb)
+}
+
   /*
   * ----[EXAMPLE TEST]----
   * Each test should completely test the response of the API end-point including response status code!
@@ -36,50 +49,124 @@ suite('Functional Tests', function() {
   */
 
   suite('Routing tests', function() {
+    before(() => {
 
+    })
 
-    suite('POST /api/books with title => create book object/expect book object', function() {
+    after(() => {
+      
+    })
+
+    let book // TODO: Find a book in the database
+
+    suite.skip('POST /api/books with title => create book object/expect book object', function() {
       
       test('Test POST /api/books with title', function(done) {
-        //done();
+        let title = 'test title'
+
+        postServer({title: title}, (err, res) => {
+          assert.equal(res.status, 200)
+          assert.isObject(res.body)
+          assert.equal(res.body.title, title)
+          assert.isOk(res.body._id)
+          done();
+        })
       });
       
       test('Test POST /api/books with no title given', function(done) {
-        //done();
+        postServer({title: ''}, (err, res) => {
+          assert.equal(res.status, 400)
+          assert.equal(res.text, 'title of book is required')
+          assert.isNotOk(res.body)
+          done();
+        })
       });
       
     });
 
 
-    suite('GET /api/books => array of books', function(){
+    suite.skip('GET /api/books => array of books', function(){
       
       test('Test GET /api/books',  function(done){
-        //done();
+        queryServer('', (err, res) => {
+          assert.equal(res.status, 200)
+          assert.isArray(res.body)
+          res.body.forEach(book => {
+            assert.isOk(book.title)
+            assert.isOk(book._id)
+            assert.isOk(book.commentCount)
+            assert.isArray(book.comments)
+          })
+          done();
+        })
       });      
       
     });
 
 
-    suite('GET /api/books/[id] => book object with [id]', function(){
+    suite.skip('GET /api/books/[id] => book object with [id]', function(){
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
-        //done();
+        queryServer({id: 23}, (err, res) => {
+          assert.equal(res.status, 400)
+          assert.equal(res.text, "no book exists")
+          assert.isNotOk(res.body)
+          done();
+        })
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
-        //done();
+        queryServer({id: book._id}, (err, res) => {
+          assert.equal(res.status, 200)
+          assert.equal(res.body._id, book._id)
+          assert.equal(res.body.title, book.title)
+          assert.isArray(res.body.comments)
+          assert.equal(res.body.comments, book.comments)
+          done();
+        })
       });
       
     });
 
 
-    suite('POST /api/books/[id] => add comment/expect book object with id', function(){
+    suite.skip('POST /api/books/[id] => add comment/expect book object with id', function(){
       
       test('Test POST /api/books/[id] with comment', function(done){
-        //done();
+        let comment = 'test comment'
+
+        postServer({id: book.id, comment: comment}, (err, res) => {
+          assert.equal(res.status, 200)
+          assert.isObject(res.body)
+          assert.equal(res.body.title, book.title)
+          assert.equal(res.body._id, book._id)
+          assert.isArray(res.body.comments)
+          assert.equal(res.body.comments[res.body.comments.length - 1], comment)
+          done();
+        })
       });
       
     });
+
+    suite.skip('DELETE /api/books/[id] => delete book/expect "delete successful"', function(){
+      chai.request(server)
+          .delete()
+          .send({id: book.id})
+          .end((err, res) => {
+            assert.equal(res.status, 200)
+            assert.equal(res.text, 'delete successful')
+            done()
+          })
+    })
+
+    suite.skip('DELETE api/books/ => delete all books/expect "complete delete successful"', function() {
+      chai.request(server)
+          .delete()
+          .send()
+          .end((err, res) => {
+            assert.equal(res.status, 200)
+            assert.equal(res.text, 'complete delete successful')
+          })
+    })
 
   });
 
