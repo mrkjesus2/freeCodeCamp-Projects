@@ -92,7 +92,7 @@ suite('Unit Tests', function(){
     
   });
   
-  suite.skip('Function convertHandler.convert(num, unit)', function() {
+  suite('Function convertHandler.convert(num, unit)', function() {
     
     test('Gal to L', function(done) {
       var input = [5, 'gal'];

@@ -6,6 +6,8 @@
 *       
 */
 
+const { init } = require("../server");
+
 function ConvertHandler() {
   let numRegex = /[\d*.\/]/g
   let unitRegex = /[a-z+]/ig
@@ -48,9 +50,23 @@ function ConvertHandler() {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
-    var result;
     
-    return result;
+    switch (initUnit.toLowerCase()) {
+      case 'gal':
+        return initNum * galToL
+      case 'l':
+        return initNum / galToL
+      case 'mi':
+        return initNum * miToKm
+      case 'km':
+        return initNum / miToKm
+      case 'lbs':
+        return initNum * lbsToKg
+      case 'kg':
+        return initNum / lbsToKg
+      default:
+        return "I don't convert that unit"
+    }
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
