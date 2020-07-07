@@ -20,7 +20,7 @@ let queryServer = (obj, cb) => {
       .end(cb)
 }
 
-suite.skip('Functional Tests', function() {
+suite('Functional Tests', function() {
 
   suite('Routing Tests', function() {
     
@@ -61,7 +61,7 @@ suite.skip('Functional Tests', function() {
       test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
         queryServer({input: '3/7.2/4kilomegagram'}, (err, res) => {
           assert.equal(res.status, 200)
-          assert.equal(res.text, 'invalid number and input')
+          assert.equal(res.text, 'invalid number and unit')
           done();
         })
       });
@@ -69,10 +69,10 @@ suite.skip('Functional Tests', function() {
       test('Convert kg (no number)', function(done) {
         queryServer({input: 'kg'}, (err, res) => {
           assert.equal(res.status, 200)
-          assert.equal(res.body.initNum, '')
+          assert.equal(res.body.initNum, 1)
           assert.equal(res.body.initUnit, 'kg')
           assert.approximately(res.body.returnNum, 2.20462, 0.1)
-          assert.equal(res.body.returnUnit, 'lb')
+          assert.equal(res.body.returnUnit, 'lbs')
           done();
         })
       });
