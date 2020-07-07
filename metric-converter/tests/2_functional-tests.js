@@ -2,7 +2,7 @@
 *
 *
 *       FILL IN EACH FUNCTIONAL TEST BELOW COMPLETELY
-*       -----[Keep the test.skips in the same order!]-----
+*       -----[Keep the tests in the same order!]-----
 *       (if additional are added, keep them at the very end!)
 */
 
@@ -26,7 +26,7 @@ suite('Functional Tests', function() {
     
     suite('GET /api/convert => conversion object', function() {
       
-      test.skip('Convert 10L (valid input)', function(done) {
+      test('Convert 10L (valid input)', function(done) {
        chai.request(server)
         .get('/api/convert')
         .query({input: '10L'})
@@ -40,7 +40,7 @@ suite('Functional Tests', function() {
         });
       });
       
-      test.skip('Convert 32g (invalid input unit)', function(done) {
+      test('Convert 32g (invalid input unit)', function(done) {
          queryServer({input: '32g'}, (err, res) => {
            assert.equal(res.status, 200)
           //  assert.equal(res.body.initNum, 32)
@@ -51,14 +51,14 @@ suite('Functional Tests', function() {
       });
       
       test('Convert 3/7.2/4kg (invalid number)', function(done) {
-        queryServer({input: '3/7.2/4kq'}, (err, res) => {
+        queryServer({input: '3/7.2/4kg'}, (err, res) => {
           assert.equal(res.status, 200)
           assert.equal(res.text, 'invalid number')
           done();
         })
       });  
       
-      test.skip('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
+      test('Convert 3/7.2/4kilomegagram (invalid number and unit)', function(done) {
         queryServer({input: '3/7.2/4kilomegagram'}, (err, res) => {
           assert.equal(res.status, 200)
           assert.equal(res.text, 'invalid number and unit')
@@ -66,7 +66,7 @@ suite('Functional Tests', function() {
         })
       });
       
-      test.skip('Convert kg (no number)', function(done) {
+      test('Convert kg (no number)', function(done) {
         queryServer({input: 'kg'}, (err, res) => {
           assert.equal(res.status, 200)
           assert.equal(res.body.initNum, 1)

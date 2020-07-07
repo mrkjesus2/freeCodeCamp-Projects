@@ -28,13 +28,15 @@ function ConvertHandler() {
   
   this.getUnit = function(input) {
     let validUnits = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
-
+    
     let unit = input.match(unitRegex).join('')
+    console.log('getUnit', unit)
 
     return validUnits.indexOf(unit) === -1 ? null : unit.toLowerCase()
   };
   
   this.getReturnUnit = function(initUnit) {
+    console.log('getReturnUnit', initUnit)
     var toUnit = ['l','gal','km','mi','kg','lbs'];
     
     return toUnit[units.indexOf(initUnit)];
