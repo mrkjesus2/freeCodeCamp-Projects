@@ -8,7 +8,7 @@
 
 function ConvertHandler() {
   let numRegex = /[\d*.\/]/g
-  let unit
+  let unitRegex = /[a-z+]/ig
 
   this.getNum = function(input) {
     let nums = input.match(numRegex) ? input.match(numRegex).join('') : '1'
@@ -24,9 +24,11 @@ function ConvertHandler() {
   };
   
   this.getUnit = function(input) {
-    var result;
-    
-    return result;
+    let validUnits = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
+
+    let unit = input.match(unitRegex).join('')
+
+    return validUnits.indexOf(unit) === -1 ? 'invalid unit' : unit
   };
   
   this.getReturnUnit = function(initUnit) {
