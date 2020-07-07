@@ -64,6 +64,13 @@ let postToServer = (obj, cb) => {
             .end(cb)
 }
 
+let putToServer = (obj, cb) => {
+  return chai.request(server)
+            .put('/api/issues/test')
+            .send(obj)
+            .end(cb)
+}
+
 let getFromServer = (obj, cb) => {
   return chai.request(server)
             .get('/api/issues/test project')
@@ -92,10 +99,10 @@ suite('Functional Tests', function() {
 
       test('Every field filled in', function(done) {
        postToServer(validReqObj, function(err, res){
-          let resObj = res.body[0]
+          let resObj = res.body
           testObj = resObj
 
-          // assert.equal(res.status, 200);
+          assert.equal(res.status, 200);
           assert.equal(resObj.issue_title, validReqObj.issue_title, 'issue_title should match' )
           assert.equal(resObj.issue_text, validReqObj.issue_text, 'issue_text should match' )
           assert.equal(resObj.created_by, validReqObj.created_by, 'created_by should match' )
@@ -113,7 +120,7 @@ suite('Functional Tests', function() {
         });
       });
       
-      test.skip('Required fields filled in', function(done) {
+      test('Required fields filled in', function(done) {
         postToServer(validReqObj, function(err, res) {
           let resObj = res.body
 
@@ -125,9 +132,10 @@ suite('Functional Tests', function() {
         })
       });
       
-      test.skip('Missing required fields', function(done) {
+      test('Missing required fields', function(done) {
         postToServer(invalidResObj, function(err, res) {
-          assert.notEqual(res.status, 200, 'res.status should not be 200')
+          assert.equal(res.status, 200, 'res.status should not be 200')
+          assert.equal(res.text, 'Missing required fields')
           done()
         })
       });
@@ -136,33 +144,33 @@ suite('Functional Tests', function() {
     
     suite('PUT /api/issues/{project} => text', function() {
       
-      test.skip('No body', function(done) {
+      test('No body', function(done) {
         chai.request(server) // This be the problem
-        postToServer({}, function(err, res) {
-          assert.equal(res.body, 'no updated field sent.', 'res.body should be: no updated field sent.')
+        putToServer({}, function(err, res) {
+          assert.equal(res.text, 'no updated field sent', 'res.body should be: no updated field sent.')
           done()
         })
       });
       
-      test.skip('One field to update', function(done) {
-        postToServer({
+      test('One field to update', function(done) {
+        putToServer({
           _id: testObj._id,
           'issue_title': 'New IssueTitle'
         }, function(err, res) {
           assert.equal(res.status, 200, 'res.status should be 200')
-          assert.equal(res.body, 'Successfully updated')
+          assert.equal(res.text, 'successfully updated')
           done()
         })
       });
       
-      test.skip('Multiple fields to update', function(done) {
-        postToServer({
+      test('Multiple fields to update', function(done) {
+        putToServer({
           _id: testObj._id,
           'issue_text': 'New issue Text',
           open: !testObj.open
         },
         (err, res) => {
-          assert.equal(res.body, 'Successfully updated')
+          assert.equal(res.text, 'successfully updated')
           done()
         })
       });
