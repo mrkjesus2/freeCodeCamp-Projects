@@ -64,15 +64,14 @@ function ConvertHandler() {
         return initNum * lbsToKg
       case 'kg':
         return initNum / lbsToKg
-      default:
-        return "I don't convert that unit"
     }
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    var result;
+    initStr = this.spellOutUnit(initUnit) 
+    retStr = this.spellOutUnit(returnUnit)
     
-    return result;
+    return `${initNum} ${initStr} converts to ${returnNum} ${retStr}`
   };
   
 }
