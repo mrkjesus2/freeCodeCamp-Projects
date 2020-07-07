@@ -49,7 +49,7 @@ suite('Unit Tests', function(){
     
   });
   
-  suite('Function convertHandler.getUnit(input)', function() {
+  suite.skip('Function convertHandler.getUnit(input)', function() {
     
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
@@ -66,7 +66,7 @@ suite('Unit Tests', function(){
     
   });
   
-  suite('Function convertHandler.getReturnUnit(initUnit)', function() {
+  suite.skip('Function convertHandler.getReturnUnit(initUnit)', function() {
     
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg'];
@@ -79,7 +79,7 @@ suite('Unit Tests', function(){
     
   });  
   
-  suite('Function convertHandler.spellOutUnit(unit)', function() {
+  suite.skip('Function convertHandler.spellOutUnit(unit)', function() {
     
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg'];
@@ -92,7 +92,7 @@ suite('Unit Tests', function(){
     
   });
   
-  suite('Function convertHandler.convert(num, unit)', function() {
+  suite.skip('Function convertHandler.convert(num, unit)', function() {
     
     test('Gal to L', function(done) {
       var input = [5, 'gal'];

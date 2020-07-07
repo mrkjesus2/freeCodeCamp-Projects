@@ -7,11 +7,20 @@
 */
 
 function ConvertHandler() {
-  
+  let numRegex = /[\d*.\/]/g
+  let unit
+
   this.getNum = function(input) {
-    var result;
-    
-    return result;
+    let nums = input.match(numRegex) ? input.match(numRegex).join('') : '1'
+    let hasSlash = nums.match(/\//g)
+    let isValid = !hasSlash || hasSlash.length == 1 ? true : false
+
+    if (hasSlash && isValid) {
+      let numArray = nums.split('/')
+      return parseFloat(numArray[0]) / parseFloat(numArray[1])
+    }
+
+    return isValid ? parseFloat(nums) : 'invalid number'
   };
   
   this.getUnit = function(input) {
