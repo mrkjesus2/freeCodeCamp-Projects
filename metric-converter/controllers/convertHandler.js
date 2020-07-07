@@ -38,9 +38,10 @@ function ConvertHandler() {
   };
 
   this.spellOutUnit = function(unit) {
-    var result;
-    
-    return result;
+    var input = ['gal','l','mi','km','lbs','kg'];
+    var expect = ['gallons', 'liters', 'miles', 'kilometers', 'pounds', 'kilograms']
+
+    return expect[input.indexOf(unit)]
   };
   
   this.convert = function(initNum, initUnit) {
