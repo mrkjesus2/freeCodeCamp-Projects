@@ -9,6 +9,7 @@
 const { init } = require("../server");
 
 function ConvertHandler() {
+  var units = ['gal','l','mi','km','lbs','kg'];
   let numRegex = /[\d*.\/]/g
   let unitRegex = /[a-z+]/ig
 
@@ -34,16 +35,15 @@ function ConvertHandler() {
   };
   
   this.getReturnUnit = function(initUnit) {
-    var result;
+    var toUnit = ['l','gal','km','mi','kg','lbs'];
     
-    return result;
+    return toUnit[units.indexOf(initUnit)];
   };
 
   this.spellOutUnit = function(unit) {
-    var input = ['gal','l','mi','km','lbs','kg'];
-    var expect = ['gallons', 'liters', 'miles', 'kilometers', 'pounds', 'kilograms']
+    var verbose = ['gallons', 'liters', 'miles', 'kilometers', 'pounds', 'kilograms']
 
-    return expect[input.indexOf(unit)]
+    return verbose[units.indexOf(unit)]
   };
   
   this.convert = function(initNum, initUnit) {
@@ -51,25 +51,28 @@ function ConvertHandler() {
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
     
-    switch (initUnit.toLowerCase()) {
-      case 'gal':
-        return initNum * galToL
-      case 'l':
-        return initNum / galToL
-      case 'mi':
-        return initNum * miToKm
-      case 'km':
-        return initNum / miToKm
-      case 'lbs':
-        return initNum * lbsToKg
-      case 'kg':
-        return initNum / lbsToKg
+    if (initNum && initUnit) {
+      switch (initUnit.toLowerCase()) {
+        case 'gal':
+          return initNum * galToL
+        case 'l':
+          return initNum / galToL
+        case 'mi':
+          return initNum * miToKm
+        case 'km':
+          return initNum / miToKm
+        case 'lbs':
+          return initNum * lbsToKg
+        case 'kg':
+          return initNum / lbsToKg
+      }
     }
+    return null
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    initStr = this.spellOutUnit(initUnit) 
-    retStr = this.spellOutUnit(returnUnit)
+    let initStr = this.spellOutUnit(initUnit) 
+    let retStr = this.spellOutUnit(returnUnit)
     
     return `${initNum} ${initStr} converts to ${returnNum} ${retStr}`
   };

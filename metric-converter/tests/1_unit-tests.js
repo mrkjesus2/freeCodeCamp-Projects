@@ -66,7 +66,7 @@ suite('Unit Tests', function(){
     
   });
   
-  suite.skip('Function convertHandler.getReturnUnit(initUnit)', function() {
+  suite('Function convertHandler.getReturnUnit(initUnit)', function() {
     
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg'];
