@@ -50,6 +50,7 @@ module.exports = function (app) {
     })
     
     .post(function (req, res){
+      // TODO: Why is this allowing duplicate issues
       let projectName = req.params.project
       
       if (req.body.issue_title.length < 1 &&

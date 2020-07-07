@@ -256,3 +256,4 @@ suite('Functional Tests', function() {
     });
 
 });
+// TODO: This could be much better
