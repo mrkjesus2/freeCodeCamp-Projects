@@ -32,9 +32,19 @@ module.exports = function (app) {
       })
     })
     
-    .post(function (req, res){
+    .post(function (req, res, next){
       var title = req.body.title;
-      //response will contain new book object including atleast _id and title
+      let book = new Book({title: title})
+      
+      if (!title) {
+        res.status(400).send('title of book is required')
+        return
+      }
+
+      book.save((err, doc) => {
+        if (err) next(err)
+        res.json(doc)
+      })
     })
     
     .delete(function(req, res){
@@ -55,10 +65,20 @@ module.exports = function (app) {
       })
     })
     
-    .post(function(req, res){
+    .post(function(req, res, next){
       var bookid = req.params.id;
       var comment = req.body.comment;
-      //json res format same as .get
+
+      Book.findOne({_id: bookid}, (err, book) => {
+        if (err) next(err)
+        console.log(book.comments, comment)
+        book.comments.push({comment: comment})
+        console.log(book.comments[0])
+        book.save((err, doc) => {
+          if (err) next(err)
+          res.json(book)
+        })
+      })
     })
     
     .delete(function(req, res){

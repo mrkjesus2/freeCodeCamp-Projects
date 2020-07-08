@@ -82,7 +82,7 @@ after(() => {
 
   suite('Routing tests', function() {
 
-    suite.skip('POST /api/books with title => create book object/expect book object', function() {
+    suite('POST /api/books with title => create book object/expect book object', function() {
       
       test('Test POST /api/books with title', function(done) {
         let title = 'test title'
@@ -100,7 +100,7 @@ after(() => {
         postServer({title: ''}, (err, res) => {
           assert.equal(res.status, 400)
           assert.equal(res.text, 'title of book is required')
-          assert.isNotOk(res.body)
+          assert.deepEqual(res.body, {})
           done();
         })
       });
@@ -157,20 +157,23 @@ after(() => {
     });
 
 
-    suite.skip('POST /api/books/[id] => add comment/expect book object with id', function(){
+    suite('POST /api/books/[id] => add comment/expect book object with id', function(){
       
       test('Test POST /api/books/[id] with comment', function(done){
         let comment = 'test comment'
 
-        postServer({id: book.id, comment: comment}, (err, res) => {
-          assert.equal(res.status, 200)
-          assert.isObject(res.body)
-          assert.equal(res.body.title, book.title)
-          assert.equal(res.body._id, book._id)
-          assert.isArray(res.body.comments)
-          assert.equal(res.body.comments[res.body.comments.length - 1], comment)
-          done();
-        })
+        chai.request(server)
+            .post('/api/books/' + book.id)
+            .send({comment: comment})
+            .end((err, res) => {
+              assert.equal(res.status, 200)
+              assert.isObject(res.body)
+              assert.equal(res.body.title, book.title)
+              assert.equal(res.body._id, book._id)
+              assert.isArray(res.body.comments)
+              assert.equal(res.body.comments[res.body.comments.length - 1].comment, comment)
+              done();
+            })
       });
       
     });
