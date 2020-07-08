@@ -5,7 +5,15 @@ let bookSchema = new mongoose.Schema({
     comments: [{
         user: {type: String},
         comment: {type: String, required: true}
-    }]
+    }],
+    commentCount: Number
+}, {
+    toObject: {virtuals: true},
+    toJSON: {virtuals: true}
+})
+
+bookSchema.virtual('commentcount').get(function() {
+    return this.comments.length
 })
 
 module.exports = mongoose.model('Book', bookSchema)

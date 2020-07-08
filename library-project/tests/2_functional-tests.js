@@ -14,11 +14,12 @@ let Book = require('../models/book')
 
 chai.use(chaiHttp);
 
-suite('Functional Tests', function() {
+suite('Functional Tests', async function() {
 
+let book
 let queryServer = (obj, cb) => {
   chai.request(server)
-      .get('/api/books')
+      .get('/api/books/')
       .query(obj)
       .end(cb)
 }
@@ -30,11 +31,40 @@ let postServer = (obj, cb) => {
       .end(cb)
 }
 
+before(async () => {
+  await Book.insertMany([
+    {
+      title: 'Book1',
+      comments: []
+    },
+    {
+      title: 'Book2',
+      comments: []
+    },{
+      title: 'Book3',
+      comments: []
+    }
+  ])
+  .then(docs => {
+    book = docs[0]
+  })
+  .catch(err => {
+    console.error(err)
+  })
+})
+
+after(() => {
+  Book.deleteMany({}, (err) => {
+    console.log('Deleted Test DB')
+  })
+})
+
+
   /*
   * ----[EXAMPLE TEST]----
   * Each test should completely test the response of the API end-point including response status code!
   */
-  test.skip('#example Test GET /api/books', function(done){
+  test('#example Test GET /api/books', function(done){
      chai.request(server)
       .get('/api/books')
       .end(function(err, res){
@@ -50,38 +80,7 @@ let postServer = (obj, cb) => {
   * ----[END of EXAMPLE TEST]----
   */
 
-  suite('Routing tests', async function() {
-    before(async () => {
-      await Book.insertMany([
-        {
-          title: 'Book1',
-          comments: []
-        },
-        {
-          title: 'Book2',
-          comments: []
-        },{
-          title: 'Book3',
-          comments: []
-        }
-      ])
-      .catch(err => {
-        console.error(err)
-      })
-    })
-
-    after(() => {
-      Book.deleteMany({}, (err) => {
-        console.log('Deleted Test DB')
-      })
-    })
-
-    let book = await Book.findOne({}, (err, doc) => {
-      if (err) console.error(err)
-      return doc
-    })
-
-    console.log('BOOK', book)
+  suite('Routing tests', function() {
 
     suite.skip('POST /api/books with title => create book object/expect book object', function() {
       
@@ -109,7 +108,7 @@ let postServer = (obj, cb) => {
     });
 
 
-    suite.skip('GET /api/books => array of books', function(){
+    suite('GET /api/books => array of books', function(){
       
       test('Test GET /api/books',  function(done){
         queryServer('', (err, res) => {
@@ -118,7 +117,7 @@ let postServer = (obj, cb) => {
           res.body.forEach(book => {
             assert.isOk(book.title)
             assert.isOk(book._id)
-            assert.isOk(book.commentCount)
+            assert.isNumber(book.commentcount)
             assert.isArray(book.comments)
           })
           done();
@@ -128,26 +127,31 @@ let postServer = (obj, cb) => {
     });
 
 
-    suite.skip('GET /api/books/[id] => book object with [id]', function(){
+    suite('GET /api/books/[id] => book object with [id]', function(){
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
-        queryServer({id: 23}, (err, res) => {
-          assert.equal(res.status, 400)
-          assert.equal(res.text, "no book exists")
-          assert.isNotOk(res.body)
-          done();
-        })
+        chai.request(server)
+            .get('/api/books/23')
+            .end((err, res) => {
+              assert.equal(res.status, 400)
+              assert.equal(res.text, "no book exists")
+              assert.deepEqual(res.body, {})
+              done();
+            })
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
-        queryServer({id: book._id}, (err, res) => {
-          assert.equal(res.status, 200)
-          assert.equal(res.body._id, book._id)
-          assert.equal(res.body.title, book.title)
-          assert.isArray(res.body.comments)
-          assert.equal(res.body.comments, book.comments)
-          done();
-        })
+        // queryServer({id: book._id}, (err, res) => {
+        chai.request(server)
+            .get('/api/books/' + book.id)
+            .end((err, res) => {
+              assert.equal(res.status, 200)
+              assert.equal(res.body._id, book._id)
+              assert.equal(res.body.title, book.title)
+              assert.isArray(res.body.comments)
+              assert.deepEqual(res.body.comments, book.comments)
+              done();
+            })
       });
       
     });

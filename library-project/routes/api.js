@@ -11,7 +11,7 @@
 var expect = require('chai').expect;
 var ObjectId = require('mongodb').ObjectId;
 var mongoose = require('mongoose')
-//Example connection: MongoClient.connect(MONGODB_CONNECTION_STRING, function(err, db) {});
+var Book = require('../models/book')
 
 mongoose.connect(process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true})
 let db = mongoose.connection
@@ -27,8 +27,9 @@ module.exports = function (app) {
 
   app.route('/api/books')
     .get(function (req, res){
-      //response will be array of book objects
-      //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+      Book.find({}, (err, books) => {
+        res.json(books)
+      })
     })
     
     .post(function (req, res){
@@ -45,7 +46,13 @@ module.exports = function (app) {
   app.route('/api/books/:id')
     .get(function (req, res){
       var bookid = req.params.id;
-      //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+
+      Book.findOne({_id: bookid}, (err, book) => {
+        if (err) {
+          res.status(400).send('no book exists')
+        }
+        res.json(book)
+      })
     })
     
     .post(function(req, res){
