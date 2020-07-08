@@ -178,12 +178,12 @@ after(() => {
       
     });
 
-    suite.skip('DELETE /api/books/', function(){
+    suite('DELETE /api/books/', function(){
       
       test('Test DELETE /api/books/[id] => delete book/expect "delete successful"', function(done){
         chai.request(server)
-            .delete()
-            .send({id: book.id})
+            .delete('/api/books/' + book.id)
+            .send()
             .end((err, res) => {
               assert.equal(res.status, 200)
               assert.equal(res.text, 'delete successful')
@@ -193,11 +193,12 @@ after(() => {
 
       test('Test DELETE /api/books/ => delete all books/expect "complette delete successful"', function(done){
         chai.request(server)
-            .delete()
+            .delete('/api/books/')
             .send()
             .end((err, res) => {
                 assert.equal(res.status, 200)
                 assert.equal(res.text, 'complete delete successful')
+                done()
               })
         })
     })
