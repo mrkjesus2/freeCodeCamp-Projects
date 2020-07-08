@@ -10,6 +10,7 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
+let Book = require('../models/book')
 
 chai.use(chaiHttp);
 
@@ -25,6 +26,7 @@ let queryServer = (obj, cb) => {
 let postServer = (obj, cb) => {
   chai.request(server)
       .post('/api/books')
+      .send(obj)
       .end(cb)
 }
 
@@ -32,7 +34,7 @@ let postServer = (obj, cb) => {
   * ----[EXAMPLE TEST]----
   * Each test should completely test the response of the API end-point including response status code!
   */
-  test('#example Test GET /api/books', function(done){
+  test.skip('#example Test GET /api/books', function(done){
      chai.request(server)
       .get('/api/books')
       .end(function(err, res){
@@ -48,16 +50,38 @@ let postServer = (obj, cb) => {
   * ----[END of EXAMPLE TEST]----
   */
 
-  suite('Routing tests', function() {
-    before(() => {
-
+  suite('Routing tests', async function() {
+    before(async () => {
+      await Book.insertMany([
+        {
+          title: 'Book1',
+          comments: []
+        },
+        {
+          title: 'Book2',
+          comments: []
+        },{
+          title: 'Book3',
+          comments: []
+        }
+      ])
+      .catch(err => {
+        console.error(err)
+      })
     })
 
     after(() => {
-      
+      Book.deleteMany({}, (err) => {
+        console.log('Deleted Test DB')
+      })
     })
 
-    let book // TODO: Find a book in the database
+    let book = await Book.findOne({}, (err, doc) => {
+      if (err) console.error(err)
+      return doc
+    })
+
+    console.log('BOOK', book)
 
     suite.skip('POST /api/books with title => create book object/expect book object', function() {
       
@@ -147,25 +171,28 @@ let postServer = (obj, cb) => {
       
     });
 
-    suite.skip('DELETE /api/books/[id] => delete book/expect "delete successful"', function(){
-      chai.request(server)
-          .delete()
-          .send({id: book.id})
-          .end((err, res) => {
-            assert.equal(res.status, 200)
-            assert.equal(res.text, 'delete successful')
-            done()
-          })
-    })
+    suite.skip('DELETE /api/books/', function(){
+      
+      test('Test DELETE /api/books/[id] => delete book/expect "delete successful"', function(done){
+        chai.request(server)
+            .delete()
+            .send({id: book.id})
+            .end((err, res) => {
+              assert.equal(res.status, 200)
+              assert.equal(res.text, 'delete successful')
+              done()
+        })
+      })
 
-    suite.skip('DELETE api/books/ => delete all books/expect "complete delete successful"', function() {
-      chai.request(server)
-          .delete()
-          .send()
-          .end((err, res) => {
-            assert.equal(res.status, 200)
-            assert.equal(res.text, 'complete delete successful')
-          })
+      test('Test DELETE /api/books/ => delete all books/expect "complette delete successful"', function(done){
+        chai.request(server)
+            .delete()
+            .send()
+            .end((err, res) => {
+                assert.equal(res.status, 200)
+                assert.equal(res.text, 'complete delete successful')
+              })
+        })
     })
 
   });
