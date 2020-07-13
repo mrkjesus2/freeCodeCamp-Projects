@@ -61,15 +61,15 @@ suite('UnitTests', () => {
     // Puzzles that are not 81 numbers/periods long show the message 
     // "Error: Expected puzzle to be 81 characters long." in the
     // `div` with the id "error-msg"
-    test.skip('Shows an error for puzzles that are not 81 numbers long', done => {
+    test('Shows an error for puzzles that are not 81 numbers long', done => {
       const shortStr = '83.9.....6.62.71...9......1945....4.37.4.3..6..';
       const longStr = '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6...';
-      const errorMsg = 'Error: Expected puzzle to be 81 characters long.';
-      const errorDiv = document.getElementById('error-msg');
       Solver.parsePuzzleString(longStr)
-
+      const errorMsg = 'Error: Expected puzzle to be 81 characters long.';
+      const errorDiv = document.getElementById('error-msg').firstChild;
+      
       assert.isOk(errorDiv)
-      assert.equal(errorDiv.innerText, errorMsg)
+      assert.equal(errorDiv.innerHTML, errorMsg)
       done();
     });
   });
