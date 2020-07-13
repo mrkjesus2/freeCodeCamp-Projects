@@ -4,76 +4,30 @@ const textArea = document.getElementById('text-input');
 document.addEventListener('DOMContentLoaded', () => {
   // Load a simple puzzle into the text area
   textArea.value = '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..';
-  stringToGrid(textArea.value)
+  puzzle.stringToGrid(textArea.value)
   textArea.addEventListener('keyup', ev => {
-    handleTextAreaInput(ev)
+    puzzle.handleTextAreaInput(ev)
   })
 
   let boxes = document.getElementsByClassName('sudoku-input')
   for (let i = 0; i < boxes.length; i++) {
     boxes[i].addEventListener('keyup', (ev) => {
-      textArea.value = handleGridInput(ev) || textArea.value
+      textArea.value = puzzle.handleGridInput(ev) || textArea.value
     })
   }
 
   let solve = document.getElementById('solve-button')
   solve.addEventListener('click', ev => {
-    console.log('Solve Pressed')
+    puzzle.solvePuzzle(textArea.value)
     ev.preventDefault()
   })
 
   let clear = document.getElementById('clear-button')
   clear.addEventListener('click', ev => {
-    console.log('Clear Pressed')
-    textArea.value = '.'.repeat(81)
-    stringToGrid(textArea.value)
+    puzzle.clearInput(ev)
   })
 });
 
-function stringToGrid(input) {
-  let parsed = puzzle.parsePuzzleString(input)
-
-  for (const box in parsed) {
-    if (parsed.hasOwnProperty(box)) {
-      const el = parsed[box];
-      document.getElementById(box).value = el == '.' ? '': el
-    }
-  }
-}
-
-function gridToString() {
-  let string = ''
-  let boxes = document.getElementsByClassName('sudoku-input')
-
-  for (let i = 0; i < boxes.length; i++) {
-    const el = boxes[i]
-    el.value == '' ? string += '.' : string += el.value
-  }
-
-  return string
-}
-
-function handleGridInput(ev) {
-  console.log(ev.key)
-  console.log(puzzle.isValidInput(ev.key))
-  if (puzzle.isValidInput(ev.key)) {
-    puzzle.hideError()
-    return gridToString()
-  } else if (ev.key == 'Tab') {
-    puzzle.hideError()
-  } else {
-    puzzle.showError('Invalid Input')
-  }
-}
-
-function handleTextAreaInput(ev) {
-  if (puzzle.isValidInput(ev.key) || ev.key == '.') {
-    puzzle.hideError()
-    stringToGrid(ev.target.value)
-  } else {
-    puzzle.showError('Invalid input')
-  }
-}
 
 
 /* 
@@ -85,6 +39,56 @@ let puzzle =  {
   isValidInput: (input) => {
     let num = parseInt(input)
     return 9 >= num  && num >= 1 ? true : false
+  },
+
+  clearInput: function(ev) {
+    textArea.value = '.'.repeat(81)
+    this.stringToGrid(textArea.value)
+  },
+
+  stringToGrid: function(input) {
+    let parsed = this.parsePuzzleString(input)
+  
+    for (const box in parsed) {
+      if (parsed.hasOwnProperty(box)) {
+        const el = parsed[box];
+        document.getElementById(box).value = el == '.' ? '': el
+      }
+    }
+  },
+
+  gridToString: function() {
+    let string = ''
+    let boxes = document.getElementsByClassName('sudoku-input')
+  
+    for (let i = 0; i < boxes.length; i++) {
+      const el = boxes[i]
+      el.value == '' ? string += '.' : string += el.value
+    }
+  
+    return string
+  },
+
+  handleGridInput: function(ev) {
+    console.log(ev.key)
+    console.log(this.isValidInput(ev.key))
+    if (this.isValidInput(ev.key)) {
+      this.hideError()
+      return this.gridToString()
+    } else if (ev.key == 'Tab') {
+      this.hideError()
+    } else {
+      this.showError('Invalid Input')
+    }
+  },
+
+  handleTextAreaInput: function(ev) {
+    if (this.isValidInput(ev.key) || ev.key == '.') {
+      this.hideError()
+      this.stringToGrid(ev.target.value)
+    } else {
+      this.showError('Invalid input')
+    }
   },
 
   parsePuzzleString: function(input) {
@@ -134,7 +138,7 @@ let puzzle =  {
     let currCol = 0
 
     for (let i = 1; i <= arr.length; i++) {
-      const val = arr[i - 1];
+      let val = arr[i - 1];
 
       if (val === '.') val = undefined
 
@@ -375,8 +379,22 @@ let puzzle =  {
     if (prevCt === newCt && newCt !== 0) {
       throw Error(`Couldn't solve the puzzle`)
     } else {
+      this.showSolution(puzzle)
       return this.isValidPuzzle ? true : false
     }
+  },
+
+  showSolution: function(obj) {
+    let str = ''
+
+    for (let row in obj.rows) {
+      for (let num in obj.rows[row]) {
+        str += obj.rows[row][num]
+      }
+    }
+    
+    this.stringToGrid(str)
+    this.gridToString()
   }
 }
 
