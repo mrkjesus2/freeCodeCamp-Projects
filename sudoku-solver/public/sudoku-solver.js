@@ -46,6 +46,10 @@ let puzzle =  {
     this.stringToGrid(textArea.value)
   },
 
+  /**
+   * Displays numbers input in the textArea on the grid
+   * @param {String} input 
+   */
   stringToGrid: function(input) {
     let parsed = this.parsePuzzleString(input)
   
@@ -57,6 +61,9 @@ let puzzle =  {
     }
   },
 
+  /**
+   * Displays the numbers input in the grid in the textArea
+   */
   gridToString: function() {
     let string = ''
     let boxes = document.getElementsByClassName('sudoku-input')
@@ -70,8 +77,6 @@ let puzzle =  {
   },
 
   handleGridInput: function(ev) {
-    console.log(ev.key)
-    console.log(this.isValidInput(ev.key))
     if (this.isValidInput(ev.key)) {
       this.hideError()
       return this.gridToString()
@@ -91,6 +96,11 @@ let puzzle =  {
     }
   },
 
+  /**
+   * Parses puzzle string and returns an object that has the
+   * html classes as property 
+   * @param {String} input 
+   */
   parsePuzzleString: function(input) {
     if (input.length != 81) this.showError('Error: Expected puzzle to be 81 characters long.')
     if (input.length == 81) this.hideError()
@@ -127,9 +137,14 @@ let puzzle =  {
     el.innerHTML = ''
   },
 
+  /**
+   * Takes a puzzle string and returns an object with rows, cols
+   * and boxes arrrays used to solve the puzzle
+   * 
+   * @param {String} input 
+   */
   makePuzzleObj: function(input) {
     let arr = input.split('')
-    let rowLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
     let boxes = []
     let rows = []
     let cols = []
@@ -176,9 +191,6 @@ let puzzle =  {
 
     Object.keys(puzzle).forEach(key => {
       puzzle[key].forEach(child => {
-        // if (this.checkForDuplicate(child)) {
-        //   hasDuplicate = true
-        // }
         if (!this.checkForAllNumbers(child)) {
           hasAllNumbers = false
         }
@@ -210,14 +222,11 @@ let puzzle =  {
 
       Object.keys(puzzleObj).forEach(key => {
         puzzleObj[key].forEach(el => {
-          let counter = 0
           el.forEach(val => {
             if (val === undefined) {
-              counter++
               count++
             }
           })
-          // console.log(counter)
         })
       })
 
@@ -237,12 +246,6 @@ let puzzle =  {
       
       let num = row[idx];
         idx % 3 === 0 ? boxElIdx = (rowNum * 3) % 9 : boxElIdx += idx % 3
-        // boxElIdx = (rowNum * 3) % 9
-        // console.log()
-        // console.log('row', rowNum, 'col', idx, 'box', boxIdx, 'boxel', boxElIdx)
-        // console.log('Row:', row.join(' | '))
-        // console.log('Col:', puzzle.cols[idx].join(' | '))
-        // console.log('Box:', puzzle.boxes[boxIdx].join(' | '))
 
 
         if (num === undefined) {
@@ -262,18 +265,13 @@ let puzzle =  {
             let newNum = possibleNums[0]
 
             // set corresponding elements
-            row[idx] = possibleNums[0] 
+            row[idx] = newNum
             col[rowNum] = newNum
-            box[boxElIdx] = newNum
-
-            // console.log(newNum)
-            // console.log('row', row.join(' | '))      
-            // console.log('col', puzzle.cols[idx].join(' | '))    
-            // console.log('box', puzzle.boxes[boxIdx].join(' | ')) 
+            box[boxElIdx] = newNum 
           }
         }
       }
-      // console.log(puzzle)
+      
       return puzzle
 
     }
@@ -294,8 +292,6 @@ let puzzle =  {
         let row = puzzle.rows[i]
         let box = puzzle.boxes[boxIdx]
         
-        // console.log(`Col: ${colNum} Row: ${i} Box: ${boxIdx} Boxel: ${boxElIdx}`)
-
         if (num === undefined) {
           let possibleNums = missing.filter(num => {
             let inRow = row.includes(num)
@@ -330,8 +326,6 @@ let puzzle =  {
 
         let col = puzzle.cols[colForm]
         let row = puzzle.rows[rowForm]
-
-        // console.log(`Box: ${boxNum} Boxel: ${i} Row: ${rowForm} Col: ${col}`)
         
         if (num === undefined) {
           let possibleNums = missing.filter(val => {
@@ -359,7 +353,6 @@ let puzzle =  {
     let newCt
 
     do {
-      // console.log('while')
       prevCt = this.countUndefined(puzzle)
 
       puzzle.rows.forEach((row, i)  => {
@@ -373,7 +366,6 @@ let puzzle =  {
       })
       
       newCt = this.countUndefined(puzzle)
-      // console.log(`Before: ${prevCt} \nAfter: ${newCt}`)
     } while (prevCt !== newCt);
     
     if (prevCt === newCt && newCt !== 0) {
