@@ -22,7 +22,7 @@ let translator = function() {
   function replaceTime(str) {
     let prevTime = str.match(timeRegex)
     let newTime
-    
+
     if (prevTime) {
       newTime = ~prevTime[0].indexOf('.') 
                 ? prevTime[0].replace('.', ':') 
@@ -32,8 +32,32 @@ let translator = function() {
     return prevTime ? str.replace(prevTime[0], newTime) : str
   }
 
-  function replaceTitle() {
+  function replaceTitle(str) {
+    for (const prop in americanToBritishTitles) {
+      if (americanToBritishTitles.hasOwnProperty(prop)) {
+        const val = americanToBritishTitles[prop];
+        let idx = str.indexOf(val)
 
+        if (idx !== -1) {
+          let arr = str.split('')
+          let endIdx = idx + val.length
+          
+          if (str[endIdx] === '.') {
+            // Remove period from American Title
+            let first = arr.slice(0, endIdx)
+            let last = arr.slice(endIdx + 1)
+            let newArr = [...first, ...last] 
+            return newArr.join('')
+          } else {
+            // Add period to British Title
+            let first = arr.slice(0, endIdx)
+            let last = arr.slice(endIdx)
+            let newArr = [...first, '.', ...last]
+            return newArr.join('')
+          }
+        }
+      }
+    }
   }
 
   function replaceAmSlang() {
@@ -46,7 +70,8 @@ let translator = function() {
 
   return ({
     toBritish: function() {
-      console.log('REPLACE', replaceTime('test'))
+      console.log('TEST', replaceTitle('test dr test'))
+      console.log('TEST', replaceTitle('test dr. test'))
     },
 
     toAmerican: function() {
