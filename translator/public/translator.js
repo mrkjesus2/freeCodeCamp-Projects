@@ -58,20 +58,53 @@ let translator = function() {
         }
       }
     }
+    return str
   }
 
-  function replaceAmSlang() {
+  function replaceAmSlang(str) {
+    let newStr = str
 
+    for (const saying in americanOnly) {
+      if (americanOnly.hasOwnProperty(saying)) {
+        const translation = americanOnly[saying];
+        // console.log(newStr)
+        if (~newStr.indexOf(saying)) {
+          newStr = newStr.replace(saying, translation)
+        }
+      }
+    }
+
+    return newStr
   }
 
-  function replaceBrSlang() {
+  function replaceBrSlang(str) {
+    let newStr = str
 
+    for (const saying in britishOnly) {
+      if (britishOnly.hasOwnProperty(saying)) {
+        const translation = britishOnly[saying];
+        // console.log(newStr)
+        if (~newStr.indexOf(saying)) {
+          newStr = newStr.replace(saying, translation)
+        }
+      }
+    }
+
+    return newStr
   }
 
   return ({
-    toBritish: function() {
-      console.log('TEST', replaceTitle('test dr test'))
-      console.log('TEST', replaceTitle('test dr. test'))
+    toBritish: function(str) {
+      let newStr = str
+      
+      console.log(newStr)
+      newStr = replaceTime(newStr)
+      console.log(newStr)
+      newStr = replaceTitle(newStr)
+      console.log(newStr)
+      newStr = replaceAmSlang(newStr)
+
+      return newStr
     },
 
     toAmerican: function() {
