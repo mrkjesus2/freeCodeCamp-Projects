@@ -61,6 +61,24 @@ let translator = function() {
     return str
   }
 
+  /**
+   * 
+   * @param {String} str | String to look for words that need replacing
+   * @param {Object} obj | An object with the translation associative object
+   */
+  function replaceSpelling(str, obj) {
+    let newStr = str
+    for (const word in obj) {
+      if (obj.hasOwnProperty(word)) {
+        if (~str.indexOf(word)) {
+          const translation = obj[word];
+          newStr = str.replace(word, translation)
+        }
+      }
+    }
+    return newStr
+  }
+
   function replaceAmSlang(str) {
     let newStr = str
 
@@ -97,13 +115,11 @@ let translator = function() {
     toBritish: function(str) {
       let newStr = str
       
-      console.log(newStr)
       newStr = replaceTime(newStr)
-      console.log(newStr)
       newStr = replaceTitle(newStr)
-      console.log(newStr)
       newStr = replaceAmSlang(newStr)
-
+      newStr = replaceSpelling(newStr, americanToBritishSpelling)
+      console.log(replaceSpelling('test favorite test', americanToBritishSpelling))
       return newStr
     },
 
