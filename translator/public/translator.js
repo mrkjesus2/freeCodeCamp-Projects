@@ -46,27 +46,24 @@ let translator = function() {
    * @param {String} word | Word to determine capitalization
    */
   function isCapitalized(word) {
-    // console.log('ISCAPITALIZED', word)
     let firstLtr = word[0]
     return firstLtr === firstLtr.toUpperCase() ? true : false
   }
 
   function capitalize(word) {
-    // console.log('CAPITALIZE', word)
     let first = word[0].toUpperCase()
     let rest = word.split('').slice(1).join('')
-    // console.log('CAPITALIZE', first + rest)
+
     return first + rest
   }
 
   function replacePhrase(str, orgPhrase, newPhrase) {
     let newSentence
-    let idx = str.toLowerCase().indexOf(orgPhrase.toLowerCase())
+    let idx = str.toLowerCase().indexOf(orgPhrase)
     let wasCapitalized = isCapitalized(str[idx])
 
     if (wasCapitalized) {
-      // console.log('replacePhrase', capitalize(orgPhrase), capitalize(newPhrase))
-      newSentence = str.replace(capitalize(orgPhrase), capitalize(newPhrase))
+      newSentence = str.replace(capitalize(str.slice(idx, idx + orgPhrase.length)), capitalize(newPhrase))
     } else {
       newSentence = str.replace(orgPhrase, newPhrase)
     }
@@ -129,21 +126,17 @@ let translator = function() {
   function findSimilarKeys(str, obj) {
     let keys = Object.keys(obj)
     let similar = keys.filter(key => {
-      // console.log('SPLIT', key.split(' '))
       let words = key.split(' ')
-      // console.log(words)
       let hasAll = true
 
-      // TODO: Should capitalization happen here
       words.forEach(word => {
         if (str.toLowerCase().indexOf(word.toLowerCase()) === -1 && words.length > 1) { 
-          // console.log(word, str.indexOf(word))
           hasAll = false 
         }
       });
       return hasAll && key.includes(str.toLowerCase())
     })
-    // console.log(similar)
+
     return similar
   }
 
@@ -160,15 +153,18 @@ let translator = function() {
       if (obj.hasOwnProperty(saying)) {
         const translation = obj[saying];
         let idx = newStr.toLowerCase().indexOf(saying)
+
         let similarKeys = findSimilarKeys(saying, obj)
+
+        // Check for preceding space unless it's the first word
         let shouldReplace = idx === 0 || !regex.test(newStr[idx - 1])
 
         if (~idx && similarKeys.length == 1 && shouldReplace) {
-          newStr = replacePhrase(newStr.toLowerCase(), saying, translation)
-        }
+          newStr = replacePhrase(newStr, saying, translation)
+        } 
       }
     }
-    // TODO: Should capitalization happen here
+    
     return newStr = newStr[0].toUpperCase() + newStr.slice(1)
   }
 
