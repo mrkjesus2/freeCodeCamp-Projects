@@ -3,12 +3,39 @@ import { britishOnly } from './british-only.js';
 import { americanToBritishSpelling } from './american-to-british-spelling.js';
 import { americanToBritishTitles } from './american-to-british-titles.js';
 
+document.addEventListener('DOMContentLoaded', ev => {
+  let trnsltBtn = document.getElementById('translate-btn')
+  let clrBtn = document.getElementById('clear-btn')
+  let select = document.getElementById('locale-select')
+  let options = select.options
+
+  trnsltBtn.addEventListener('click', ev => {
+    let input = document.getElementById('text-input')
+    let text = input.value
+    translator.showTranslation(text)
+  })
+
+  clrBtn.addEventListener('click', ev => {
+    translator.clearInput()
+  })
+  
+  select.addEventListener('input', ev => {
+    //Change the language setting
+    translator.lang = options[options.selectedIndex].value
+    console.log(translator.lang)
+  })
+
+  // Initialize the language setting
+  translator.lang = options[options.selectedIndex].value
+})
+
+
 /* 
   Export your functions for testing in Node.
   Note: The `try` block is to prevent errors on
   the client side
 */
-let translator = function() {
+let translator = (function() {
   let timeRegex = /\d+[:.]\d+/
 
   // Create British Spelling object
@@ -34,13 +61,6 @@ let translator = function() {
     }
   }
 
-  // for (const am in americanToBritishSpelling) {
-  //   if (americanToBritishSpelling.hasOwnProperty(am)) {
-  //     const br = americanToBritishSpelling[am]
-  //     britishToAmericanSpelling[br] = am
-  //   }
-  // }
-
   /**
    * Returns a boolean - True if capitalized, False if not
    * @param {String} word | Word to determine capitalization
@@ -57,15 +77,19 @@ let translator = function() {
     return first + rest
   }
 
+  function wrap(str) {
+    return `<span class="highlight">${str}</span>`
+  }
+
   function replacePhrase(str, orgPhrase, newPhrase) {
     let newSentence
     let idx = str.toLowerCase().indexOf(orgPhrase)
     let wasCapitalized = isCapitalized(str[idx])
 
     if (wasCapitalized) {
-      newSentence = str.replace(capitalize(str.slice(idx, idx + orgPhrase.length)), capitalize(newPhrase))
+      newSentence = str.replace(capitalize(str.slice(idx, idx + orgPhrase.length)), wrap(capitalize(newPhrase)) )
     } else {
-      newSentence = str.replace(orgPhrase, newPhrase)
+      newSentence = str.replace(orgPhrase, wrap(newPhrase))
     }
 
     return newSentence
@@ -81,7 +105,7 @@ let translator = function() {
                 : prevTime[0].replace(':', '.')
     }
       
-    return prevTime ? str.replace(prevTime[0], newTime) : str
+    return prevTime ? str.replace(prevTime[0], wrap(newTime) ) : str
   }
 
   /**
@@ -96,7 +120,7 @@ let translator = function() {
       if (obj.hasOwnProperty(title)) {
         if (~str.toLowerCase().indexOf(title.toLowerCase())) {
           const newTitle = obj[title];
-          newStr = replacePhrase(str, title, newTitle)    
+          newStr = replacePhrase(str, title, newTitle )    
         }
       }
     }
@@ -113,10 +137,10 @@ let translator = function() {
     let newStr = str
     for (const word in obj) {
       if (obj.hasOwnProperty(word)) {
-        if (~str.indexOf(word)) {
+        if (~str.toLowerCase().indexOf(word)) {
           const translation = obj[word];
           // newStr = str.replace(word, translation)
-          newStr = replacePhrase(str, word, translation)
+          newStr = replacePhrase(str, word, wrap(translation) )
         }
       }
     }
@@ -160,16 +184,18 @@ let translator = function() {
         let shouldReplace = idx === 0 || !regex.test(newStr[idx - 1])
 
         if (~idx && similarKeys.length == 1 && shouldReplace) {
-          newStr = replacePhrase(newStr, saying, translation)
+          newStr = replacePhrase(newStr, saying, wrap(translation) )
         } 
       }
     }
-    
-    return newStr = newStr[0].toUpperCase() + newStr.slice(1)
+
+    return newStr
   }
 
 
   return ({
+    lang: '',
+
     toBritish: function(str) {
       let newStr = str
       
@@ -178,6 +204,7 @@ let translator = function() {
       newStr = replaceSlang(newStr, americanOnly)
       newStr = replaceSpelling(newStr, americanToBritishSpelling)
       
+      // console.log('TEST', newStr)
       return newStr
     },
 
@@ -188,13 +215,58 @@ let translator = function() {
       newStr = replaceTitle(newStr, britishToAmericanTitles)
       newStr = replaceSlang(newStr, britishOnly)
       newStr = replaceSpelling(newStr, britishToAmericanSpelling)      
-
+      
+      // console.log('TEST', newStr)
       return newStr
+    },
+
+    clearInput: function() {
+      const errMsg = document.getElementById('error-msg')
+      const phrase = document.getElementById('translated-sentence')
+      const textArea = document.getElementById('text-input')
+
+      errMsg.innerHTML = ''
+      phrase.innerHTML = ''
+      textArea.value = ''
+    },
+
+    showTranslation: function(text) {
+      this.clearInput()
+      let output = document.getElementById('translated-sentence')
+      let translated
+
+      if (text === '') {
+        console.log('Showing error')
+        this.showError('Error: No text to translate.')
+      } else if (this.lang === 'american-to-british') {
+        console.log('To British')
+        translated = this.toBritish(text)
+      } else {
+        console.log('To American')
+        translated = this.toAmerican(text)
+      }
+    
+      if (translated === text) {
+        translated = 'Everything looks good to me!'
+      }
+      if (translated) {
+        output.innerHTML = translated
+      }
+    },
+
+    showError: function(msg) {
+      let el = document.getElementById('error-msg')
+      el.append(`<p>${msg}</p>`)
+    },
+
+    clearError: function() {
+      
     }
+
   })
-}
+})()
 
 try {
-  module.exports = translator()
+  module.exports = translator
 } catch (e) {}
 
