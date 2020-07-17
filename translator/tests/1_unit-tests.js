@@ -26,12 +26,14 @@ suite('Unit Tests', () => {
   });
 
   suite('Function ____()', () => {
+    suiteSetup(() => {
+      Translator.lang = 'american-to-british'
+    })
     suite('American to British English', () => {
-
       test('Mangoes are my favorite fruit. --> Mangoes are my favourite fruit.', done => {
         const input = 'Mangoes are my favorite fruit.';
         const output = 'Mangoes are my favourite fruit.';
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -39,7 +41,7 @@ suite('Unit Tests', () => {
         const input = 'I ate yogurt for breakfast.';
         const output = 'I ate yoghurt for breakfast.';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -47,7 +49,7 @@ suite('Unit Tests', () => {
         const input = "We had a party at my friend's condo.";
         const output = "We had a party at my friend's flat.";
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -55,7 +57,7 @@ suite('Unit Tests', () => {
         const input = 'Can you toss this in the trashcan for me?';
         const output = 'Can you toss this in the bin for me?';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -63,7 +65,7 @@ suite('Unit Tests', () => {
         const input = 'The parking lot was full.';
         const output = 'The car park was full.';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -71,7 +73,7 @@ suite('Unit Tests', () => {
         const input = 'Like a high tech Rube Goldberg machine.';
         const output = 'Like a high tech Heath Robinson device.';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
       
@@ -79,7 +81,7 @@ suite('Unit Tests', () => {
         const input = 'To play hooky means to skip class or work.';
         const output = 'To bunk off means to skip class or work.';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -87,7 +89,7 @@ suite('Unit Tests', () => {
         const input = 'No Mr. Bond, I expect you to die.';
         const output = 'No Mr Bond, I expect you to die.';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -95,7 +97,7 @@ suite('Unit Tests', () => {
         const input = 'Dr. Grosh will see you now.';
         const output = 'Dr Grosh will see you now.';
 
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -103,19 +105,21 @@ suite('Unit Tests', () => {
         const input = 'Lunch is at 12:15 today.';
         const output = 'Lunch is at 12.15 today.';
         
-        assert.equal(Translator.toBritish(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
     });
 
     suite('British to American English', () => {
-
+      suiteSetup(() => {
+        Translator.lang = 'british-to-american'
+      })
       test('We watched the footie match for a while. --> We watched the soccer match for a while.', done => {
         const input = 'We watched the footie match for a while.';
         const output = 'We watched the soccer match for a while.';
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -123,7 +127,7 @@ suite('Unit Tests', () => {
         const input = 'Paracetamol takes up to an hour to work.';
         const output = 'Tylenol takes up to an hour to work.';
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -131,7 +135,7 @@ suite('Unit Tests', () => {
         const input = 'First, caramelise the onions.';
         const output = 'First, caramelize the onions.';
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -139,7 +143,7 @@ suite('Unit Tests', () => {
         const input = 'I spent the bank holiday at the funfair.';
         const output = 'I spent the public holiday at the carnival.';
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -147,7 +151,7 @@ suite('Unit Tests', () => {
         const input = 'I had a bicky then went to the chippy.';
         const output = 'I had a cookie then went to the fish-and-chip shop.';
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -155,7 +159,7 @@ suite('Unit Tests', () => {
         const input = "I've just got bits and bobs in my bum bag.";
         const output = "I've just got odds and ends in my fanny pack.";
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
       
@@ -163,7 +167,7 @@ suite('Unit Tests', () => {
         const input = "The car boot sale at Boxted Airfield was called off.";
         const output = "The swap meet at Boxted Airfield was called off.";
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -171,7 +175,7 @@ suite('Unit Tests', () => {
         const input = "Have you met Mrs Kalyani?";
         const output = "Have you met Mrs. Kalyani?";
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -179,7 +183,7 @@ suite('Unit Tests', () => {
         const input = "Prof Joyner of King's College, London.";
         const output = "Prof. Joyner of King's College, London.";
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
@@ -187,7 +191,7 @@ suite('Unit Tests', () => {
         const input = 'Tea time is usually around 4 or 4.30.';
         const output = 'Tea time is usually around 4 or 4:30.';
 
-        assert.equal(Translator.toAmerican(input).replace(wrapReg, ''), output)
+        assert.equal(Translator.translate(input).replace(wrapReg, ''), output)
         done();
       });
 
